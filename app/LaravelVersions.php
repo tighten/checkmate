@@ -5,15 +5,17 @@ namespace App;
 use Exception;
 use Github\Client as GitHubClient;
 use Github\ResultPager as GitHubResultPager;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Cache\CacheManager;
 
 class LaravelVersions
 {
     private $github;
+    private $cache;
 
-    public function __construct(GitHubClient $github)
+    public function __construct(GitHubClient $github, CacheManager $cache)
     {
         $this->github = $github;
+        $this->cache = $cache;
     }
 
     public function latest()
@@ -35,8 +37,8 @@ class LaravelVersions
      */
     public function latestForMinor($minor)
     {
-        if (Cache::has($this->cacheKeyForMinor($minor))) {
-            return Cache::get($this->cacheKeyForMinor($minor));
+        if ($this->cache->has($this->cacheKeyForMinor($minor))) {
+            return $this->cache->get($this->cacheKeyForMinor($minor));
         }
 
         $releasesApi = $this->github->api('repo')->releases();
@@ -48,7 +50,7 @@ class LaravelVersions
         while (true) {
             foreach ($result as $release) {
                 if ($this->minorFromRelease($release['tag_name']) == $minor) {
-                    Cache::put($this->cacheKeyForMinor($minor), $this->trim($release['tag_name']), 60);
+                    $this->cache->put($this->cacheKeyForMinor($minor), $this->trim($release['tag_name']), 60);
                     return $this->trim($release['tag_name']);
                 }
             }
@@ -83,6 +85,7 @@ class LaravelVersions
     public function minorFromRelease($version)
     {
         $version = $this->trim($version); // Just in case
+
         return substr(
             $version,
             0,

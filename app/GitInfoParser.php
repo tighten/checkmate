@@ -3,16 +3,24 @@
 namespace App;
 
 use Github\Client as GitHubClient;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Cache\CacheManager;
 use stdClass;
 
 class GitInfoParser
 {
     protected const CACHE_LENGTH = 5;
+    private $github;
+    private $cache;
+
+    public function __construct(GitHubClient $github, CacheManager $cache)
+    {
+        $this->github = $github;
+        $this->cache = $cache;
+    }
 
     public function laravelConstraint($vendor, $package)
     {
-        return Cache::remember("{$vendor}/{$package}--laravel-constraint", static::CACHE_LENGTH, function () use ($vendor, $package) {
+        return $this->cache->remember("{$vendor}/{$package}--laravel-constraint", static::CACHE_LENGTH, function () use ($vendor, $package) {
             return $this->laravelConstraintFromComposerJson(
                 $this->composerJsonForRepo($vendor, $package)
             );
@@ -21,7 +29,7 @@ class GitInfoParser
 
     public function laravelVersion($vendor, $package)
     {
-        return Cache::remember("{$vendor}/{$package}--laravel-version", static::CACHE_LENGTH, function () use ($vendor, $package) {
+        return $this->cache->remember("{$vendor}/{$package}--laravel-version", static::CACHE_LENGTH, function () use ($vendor, $package) {
             return $this->laravelVersionFromComposerLock(
                 $this->composerLockForRepo($vendor, $package)
             );
@@ -52,8 +60,7 @@ class GitInfoParser
 
     protected function fileForRepo($vendor, $project, $fileName)
     {
-        $client = app(GitHubClient::class);
-        $fileInfo = $client->api('repo')->contents()->show($vendor, $project, $fileName);
+        $fileInfo = $this->github->api('repo')->contents()->show($vendor, $project, $fileName);
 
         return base64_decode($fileInfo['content']);
     }

@@ -10,12 +10,12 @@ class Project extends Model
 
     public function getLaravelConstraintAttribute()
     {
-        return (new GitInfoParser)->laravelConstraint($this->vendor, $this->package);
+        return app(GitInfoParser::class)->laravelConstraint($this->vendor, $this->package);
     }
 
     public function getLaravelVersionAttribute()
     {
-        return (new GitInfoParser)->laravelVersion($this->vendor, $this->package);
+        return app(GitInfoParser::class)->laravelVersion($this->vendor, $this->package);
     }
 
     public function getDesiredLaravelVersionAttribute()
