@@ -22,4 +22,9 @@ class Project extends Model
     {
         return app(LaravelVersions::class)->latestForVersion($this->laravel_version);
     }
+
+    public function getIsBehindLatestAttribute()
+    {
+        return version_compare($this->desired_laravel_version, $this->laravel_version) > 0;
+    }
 }

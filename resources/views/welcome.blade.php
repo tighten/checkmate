@@ -65,20 +65,9 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
-
             <div class="content">
                 @foreach ($projects as $project)
-                    <b>{{ $project->name }}</b> has constraint laravel/framework@<b>{{ $project->laravel_constraint }}</b> and version laravel/framework@<b>{{ $project->laravel_version }}</b>. The latest version for that minor should be <b>{{ $project->desired_laravel_version }}</b>.<br>
+                    <b>{{ $project->name }}</b> has constraint laravel/framework@<b>{{ $project->laravel_constraint }}</b> and version laravel/framework@<b>{{ $project->laravel_version }}</b>. The latest version for that minor should be <b>{{ $project->desired_laravel_version }}</b>.@if ($project->is_behind_latest) <span style="font-weight: bold; color: red;">LATE</span> @endif<br>
                 @endforeach
             </div>
         </div>
