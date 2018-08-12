@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\GitInfoParser;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
@@ -17,5 +16,10 @@ class Project extends Model
     public function getLaravelVersionAttribute()
     {
         return (new GitInfoParser)->laravelVersion($this->vendor, $this->package);
+    }
+
+    public function getDesiredLaravelVersionAttribute()
+    {
+        return app(LaravelVersions::class)->latestForVersion($this->laravel_version);
     }
 }

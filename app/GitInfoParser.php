@@ -52,8 +52,7 @@ class GitInfoParser
 
     protected function fileForRepo($vendor, $project, $fileName)
     {
-        $client = new GitHubClient;
-        $client->authenticate(config('services.github.token'), null, GitHubClient::AUTH_HTTP_TOKEN);
+        $client = app(GitHubClient::class);
         $fileInfo = $client->api('repo')->contents()->show($vendor, $project, $fileName);
 
         return base64_decode($fileInfo['content']);

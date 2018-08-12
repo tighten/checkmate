@@ -7,5 +7,5 @@
 2. Save it in `.env` as `GITHUB_TOKEN`
 
 ## Next steps
-- get latest of 5.4.*, 5.5.*, etc. from laravel to compare against
+- write tests
 - stuff
