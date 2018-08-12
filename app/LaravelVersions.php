@@ -21,7 +21,7 @@ class LaravelVersions
     public function latest()
     {
         return $this->trim(
-            $this->github->api('repo')->releases()->latest('laravel', 'framework')['tag_name']
+            $this->github->api('repo')->tags('laravel', 'framework')[0]['name']
         );
     }
 
@@ -41,17 +41,17 @@ class LaravelVersions
             return $this->cache->get($this->cacheKeyForMinor($minor));
         }
 
-        $releasesApi = $this->github->api('repo')->releases();
+        $repoApi = $this->github->api('repo');
         $paginator = new GitHubResultPager($this->github);
 
-        $result = $paginator->fetch($releasesApi, 'all', ['laravel', 'framework']);
+        $result = $paginator->fetch($repoApi, 'tags', ['laravel', 'framework']);
 
         // @todo: Figure out whether smarter people would have a better solution
         while (true) {
-            foreach ($result as $release) {
-                if ($this->minorFromRelease($release['tag_name']) == $minor) {
-                    $this->cache->put($this->cacheKeyForMinor($minor), $this->trim($release['tag_name']), 60);
-                    return $this->trim($release['tag_name']);
+            foreach ($result as $tag) {
+                if ($this->minorFromTag($tag['name']) == $minor) {
+                    $this->cache->put($this->cacheKeyForMinor($minor), $this->trim($tag['name']), 60);
+                    return $this->trim($tag['name']);
                 }
             }
 
@@ -67,14 +67,14 @@ class LaravelVersions
     }
 
     /**
-     * Gives the latest release number for the minor version represented by the passed verison
+     * Gives the latest tag number for the minor version represented by the passed verison
      *
      * @param  string $version 5.6.23 or similar
      * @return string          5.6.33 or similar
      */
     public function latestForVersion($version)
     {
-        return $this->latestForMinor($this->minorFromRelease($version));
+        return $this->latestForMinor($this->minorFromTag($version));
     }
 
     public function trim($version)
@@ -82,7 +82,7 @@ class LaravelVersions
         return ltrim($version, 'v');
     }
 
-    public function minorFromRelease($version)
+    public function minorFromTag($version)
     {
         $version = $this->trim($version); // Just in case
 
