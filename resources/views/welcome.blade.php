@@ -1,75 +1,70 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Version Check</title>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,700" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="css/main.css">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
+        <title>Version Check - Tighten</title>
     </head>
+
     <body>
-        <div class="flex-center position-ref full-height">
-            <div class="content">
-                @foreach ($projects as $project)
-                    <b>{{ $project->name }}</b> has constraint laravel/framework@<b>{{ $project->laravel_constraint }}</b> and version laravel/framework@<b>{{ $project->laravel_version }}</b>. The latest version for that minor should be <b>{{ $project->desired_laravel_version }}</b>.@if ($project->is_behind_latest) <span style="font-weight: bold; color: red;">LATE</span> @endif<br>
-                @endforeach
+        <div class="bg-white border-t-4 border-indigo relative z-10 shadow">
+            <div class="p-2">
+                <section class="max-w-lg mx-auto">
+                    <div class="flex justify-between items-center">
+                        <p class="flex items-center">
+                            <span class="uppercase text-2xl leading-normal text-black-light font-semibold font-open-sans tracking-wide">Version Check</span>
+                        </p>
+
+                        <p class="italic font-thin leading-normal text-grey-blue-darkest">Catchy phrase I guess?</p>
+                    </div>
+                </section>
             </div>
+        </div>
+
+        <div class="bg-frost font-sans relative z-0">
+            <div class="max-w-lg mx-auto pt-8">
+                <p class="mb-6 text-black-lighter">Our projects n stuff?</p>
+
+                <div class="rounded-lg shadow">
+                    <ul class="bg-grey-blue-light flex list-reset p-4 rounded-t-lg border-grey border-b-2">
+                        <li class="w-2/6 text-grey-darker font-semibold uppercase text-xs tracking-wide">Project name</li>
+
+                        <li class="w-1/6 text-grey-darker font-semibold uppercase text-xs tracking-wide">Laravel Version Constraint</li>
+
+                        <li class="w-1/6 text-grey-darker font-semibold uppercase text-xs tracking-wide">Current Laravel Version</li>
+
+                        <li class="w-1/6 text-grey-darker font-semibold uppercase text-xs tracking-wide">Prescribed Laravel Version</li>
+
+                        <li class="w-1/6 text-grey-darker font-semibold uppercase text-xs tracking-wide">Status</li>
+                    </ul>
+
+                    <section class="bg-white rounded-b-lg">
+                        @foreach ($projects as $project)
+                            <ul class="flex list-reset p-4 border-t border-smoke">
+                                <li class="w-2/6">
+                                    <a class="text-indigo no-underline text-md" href="#">
+                                        {{ $project->name }}
+                                    </a>
+                                </li>
+
+                                <li class="w-1/6 text-black-lightest">{{ $project->laravel_constraint }}</li>
+
+                                <li class="w-1/6 text-black-lightest">{{ $project->laravel_version }}</li>
+
+                                <li class="w-1/6 text-black-lightest">{{ $project->desired_laravel_version }}</li>
+
+                                <li class="w-1/6 text-black-lightest">@if ($project->is_behind_latest) <span style="font-weight: bold; color: red;">BEHIND</span> @endif</li>
+                            </ul>
+                        @endforeach
+                    </section>
+                </div>
+            </div>
+            <br><br>
         </div>
     </body>
 </html>
