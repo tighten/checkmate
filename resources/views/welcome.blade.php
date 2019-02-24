@@ -58,7 +58,7 @@
 
                                 <li class="w-1/6 text-black-lightest">{{ $project->desired_laravel_version }}</li>
 
-                                <li class="w-1/6 text-black-lightest">@if ($project->is_behind_latest) <span style="font-weight: bold; color: red;">BEHIND</span> @endif</li>
+                                <li class="w-1/6 text-black-lightest">{!! $project->presentStatus() !!}</li>
                             </ul>
                         @endforeach
                     </section>

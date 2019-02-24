@@ -27,4 +27,13 @@ class Project extends Model
     {
         return version_compare($this->desired_laravel_version, $this->laravel_version) > 0;
     }
+
+    public function presentStatus()
+    {
+        if ($this->is_behind_latest) {
+            return '<span style="font-weight: bold; color: red;">BEHIND</span>';
+        }
+
+        return '<span style="font-weight: bold; color: green;">CURRENT</span>';
+    }
 }
