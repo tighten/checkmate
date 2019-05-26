@@ -50,7 +50,7 @@ class LaravelVersions
         while (true) {
             foreach ($result as $tag) {
                 if ($this->minorFromTag($tag['name']) == $minor) {
-                    $this->cache->put($this->cacheKeyForMinor($minor), $this->trim($tag['name']), 60);
+                    $this->cache->put($this->cacheKeyForMinor($minor), $this->trim($tag['name']), 3600);
                     return $this->trim($tag['name']);
                 }
             }
