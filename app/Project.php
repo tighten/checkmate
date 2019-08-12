@@ -36,4 +36,9 @@ class Project extends Model
 
         return '<span style="font-weight: bold; color: green;">CURRENT</span>';
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('ignored', 0);
+    }
 }
