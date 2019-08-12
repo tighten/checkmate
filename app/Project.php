@@ -8,6 +8,10 @@ class Project extends Model
 {
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'ignored' => 'boolean',
+    ];
+
     public function getLaravelConstraintAttribute()
     {
         return app(GitInfoParser::class)->laravelConstraint($this->vendor, $this->package);
