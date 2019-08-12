@@ -28,7 +28,7 @@
 
         <div class="bg-frost font-sans relative z-0">
             <div class="max-w-lg mx-auto pt-8">
-                <p class="mb-6 text-black-lighter">Our projects n stuff?</p>
+                <p class="mb-6 text-black-lighter">Showing versions for {{ $projects->count() }} active packages</p>
 
                 <div class="rounded-lg shadow">
                     <ul class="bg-grey-blue-light flex list-reset p-4 rounded-t-lg border-grey border-b-2">
