@@ -9,7 +9,9 @@ class AddIgnoredColumnToProjectsTable extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->boolean('ignored');
+            $table->boolean('ignored')
+                ->default(false)
+                ->after('package');
         });
     }
 
