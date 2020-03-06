@@ -8,11 +8,11 @@ use Github\ResultPager;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 
-class SyncReposCommand extends Command
+class SyncProjects extends Command
 {
-    protected $signature = 'sync:repos';
+    protected $signature = 'sync:projects';
 
-    protected $description = 'Sync projects with available GitHub repos';
+    protected $description = 'Sync projects from Tighten\'s Github organization';
 
     protected $client;
 
@@ -29,14 +29,14 @@ class SyncReposCommand extends Command
         $gitHubRepos = $this->fetchRepos();
 
         // Fetch all repos from the TightenCo GitHub account, and add any repos to the DB that do not
-        // already exist. Ignore any repos that are forks of other packages for now. New repos are
-        // active by default.
+        // already exist. Ignore any repos that are not PHP and are forks of other packages
+        // for now. New repos are active by default.
         $gitHubRepos->reject(function ($repo, $key) use ($projects) {
             $project = $projects->first(function ($project, $key) use ($repo) {
                 return strtolower($project->name) == strtolower($repo['name']);
             });
 
-            return ! is_null($project) || $repo['fork'];
+            return !is_null($project) || $repo['language'] !== 'PHP' || $repo['fork'];
         })->map(function ($repo) {
             list($vendor, $package) = explode("/", $repo['full_name']);
 

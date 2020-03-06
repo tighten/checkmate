@@ -11,7 +11,7 @@ class SyncPackageVersions extends Command
 {
     protected $signature = 'sync:packageversions {package?}';
 
-    protected $description = 'Warm the cache with version info of all active projects that aren\'t already cached. Specify \'vendor/package\' to hydrade a single package';
+    protected $description = 'Warm the cache with version info of all active projects that aren\'t already cached. Specify \'vendor/package\' to hydrate a single package';
 
     protected $client;
 
