@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b881e5812a03cba6e679f6bd6e720002",
+    "content-hash": "6f7f717193071e2bc1b00884318cc367",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -2304,6 +2304,47 @@
                 "uuid"
             ],
             "time": "2018-07-19T23:38:55+00:00"
+        },
+        {
+            "name": "stevegrunwell/time-constants",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stevegrunwell/time-constants.git",
+                "reference": "b9bfb7d39f55308268ef8dffcf1452cef96dc2b2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stevegrunwell/time-constants/zipball/b9bfb7d39f55308268ef8dffcf1452cef96dc2b2",
+                "reference": "b9bfb7d39f55308268ef8dffcf1452cef96dc2b2",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.13",
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "constants.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Steve Grunwell",
+                    "email": "steve@stevegrunwell.com",
+                    "homepage": "https://stevegrunwell.com"
+                }
+            ],
+            "description": "A series of constants designed to make it easier to express time in PHP applications",
+            "time": "2019-11-25T18:13:08+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

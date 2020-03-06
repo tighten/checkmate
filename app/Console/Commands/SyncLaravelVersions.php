@@ -24,7 +24,7 @@ class SyncLaravelVersions extends Command
 
     public function handle()
     {
-        $versions = cache()->remember('github::laravel-versions', 3600, function () {
+        $versions = cache()->remember('github::laravel-versions', HOUR_IN_SECONDS, function () {
             $repositoryApi = $this->github->api('repo');
 
             $paginator = new GitHubResultPager($this->github);

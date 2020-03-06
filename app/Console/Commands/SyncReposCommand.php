@@ -53,7 +53,7 @@ class SyncReposCommand extends Command
 
     protected function fetchRepos()
     {
-        return Cache::remember('repos', 86400, function () {
+        return Cache::remember('repos', DAY_IN_SECONDS, function () {
             $githubClient = app(GitHubClient::class);
 
             $repos = (new ResultPager($githubClient))->fetchAll(

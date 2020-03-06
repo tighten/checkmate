@@ -8,7 +8,7 @@ use stdClass;
 
 class GitInfoParser
 {
-    protected const CACHE_LENGTH = 3600;
+    protected const CACHE_LENGTH = HOUR_IN_SECONDS;
     private $github;
     private $cache;
 
