@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Exceptions\NotALaravelProjectException;
 use App\Project;
 use Github\Client as GitHubClient;
 use Exception;
@@ -29,12 +30,16 @@ class SyncPackageVersions extends Command
         $bar = $this->output->createProgressBar($projects->count());
         $bar->start();
 
-        $projects->map(function ($project, $key) use ($bar) {
+        $projects->map(function (Project $project, $key) use ($bar) {
             // For now we don't care what the exception was that was thrown by the GitInfoParser or
             // the LaravelVersions parser. We swallow the exception and continue.
             try {
-                $this->syncProjectVersion($project);
-            } catch (Exception $e) {
+                // $this->syncProjectVersion($project);
+
+                $project->syncLaravelVersionAndConstraint();
+
+            } catch (NotALaravelProjectException $e) {
+                $project->update(['ignored' => true]);
             }
 
             $bar->advance();

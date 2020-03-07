@@ -75,5 +75,7 @@ class SyncLaravelVersions extends Command
 
                 return $version;
             });
+
+        $this->info('Finished Laravel versions to application');
     }
 }
