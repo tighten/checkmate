@@ -26,8 +26,6 @@ class Project extends Model
 
     public function getDesiredLaravelVersionAttribute()
     {
-        // return app(LaravelVersions::class)->latestForVersion($this->laravel_version);
-
         [$major, $minor] = explode('.', $this->current_laravel_version);
 
         $version = LaravelVersion::where([

@@ -62,7 +62,6 @@ class LaravelVersions
             $result = $paginator->fetchNext();
         }
 
-        // @todo: Why is it not matching <5.3? Is there a page limit?
         throw new Exception("Nothing matches minor version [{$minor}]; sorry!");
     }
 

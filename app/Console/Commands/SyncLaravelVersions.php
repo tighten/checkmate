@@ -58,7 +58,7 @@ class SyncLaravelVersions extends Command
                     'minor' => $item['minor'],
                 ])->first();
 
-                if (!$version) {
+                if (! $version) {
                     // Create it if it doesn't exist
                     return LaravelVersion::create([
                         'major' => $item['major'],

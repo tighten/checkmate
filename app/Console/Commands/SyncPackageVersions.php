@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Exceptions\NotALaravelProjectException;
 use App\Project;
 use Github\Client as GitHubClient;
-use Exception;
 use Illuminate\Console\Command;
 
 class SyncPackageVersions extends Command
@@ -34,8 +33,6 @@ class SyncPackageVersions extends Command
             // For now we don't care what the exception was that was thrown by the GitInfoParser or
             // the LaravelVersions parser. We swallow the exception and continue.
             try {
-                // $this->syncProjectVersion($project);
-
                 $project->syncLaravelVersionAndConstraint();
 
             } catch (NotALaravelProjectException $e) {
@@ -46,13 +43,6 @@ class SyncPackageVersions extends Command
         });
 
         $bar->finish();
-    }
-
-    protected function syncProjectVersion($project)
-    {
-        $project->laravel_constraint;
-        $project->laravel_version;
-        $project->desired_laravel_version;
     }
 
     protected function getProjects()

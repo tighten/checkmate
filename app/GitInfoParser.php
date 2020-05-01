@@ -10,6 +10,7 @@ use stdClass;
 class GitInfoParser
 {
     protected const CACHE_LENGTH = HOUR_IN_SECONDS;
+
     private $github;
     private $cache;
 
@@ -46,7 +47,7 @@ class GitInfoParser
     {
         $laravelDetails = collect($composerLock->packages)->firstWhere('name', 'laravel/framework');
 
-        if (!$laravelDetails) {
+        if (! $laravelDetails) {
             throw new NotALaravelProjectException('Could not find laravel/framework in composer lock file');
         }
 

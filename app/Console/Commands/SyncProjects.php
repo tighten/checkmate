@@ -36,7 +36,7 @@ class SyncProjects extends Command
                 return strtolower($project->name) == strtolower($repo['name']);
             });
 
-            return !is_null($project) || $repo['language'] !== 'PHP' || $repo['fork'];
+            return ! is_null($project) || $repo['language'] !== 'PHP' || $repo['fork'];
         })->map(function ($repo) {
             list($vendor, $package) = explode("/", $repo['full_name']);
 
