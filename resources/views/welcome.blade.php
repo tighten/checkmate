@@ -49,7 +49,7 @@
                         @foreach ($projects as $project)
                             <ul class="flex list-reset p-4 border-t border-smoke">
                                 <li class="w-2/6">
-                                    <a class="text-indigo no-underline text-md" href="#">
+                                    <a class="text-indigo no-underline text-md" href="{{ $project->github_url }}">
                                         {{ $project->name }}
                                     </a>
                                 </li>

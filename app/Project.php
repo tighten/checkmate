@@ -38,6 +38,11 @@ class Project extends Model
         return (string) $version;
     }
 
+    public function getGithubUrlAttribute()
+    {
+        return 'https://github.com/' . $this->vendor . '/' . $this->package;
+    }
+
     public function getIsBehindLatestAttribute()
     {
         return version_compare($this->desired_laravel_version, $this->laravel_version) > 0;
