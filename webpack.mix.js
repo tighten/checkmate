@@ -20,8 +20,8 @@ class TailwindExtractor {
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-   .postCss('resources/assets/css/main.css', 'public/css', [
+mix.js('resources/js/app.js', 'public/js')
+   .postCss('resources/css/main.css', 'public/css', [
         tailwindcss('tailwind.js'),
    ]);
 
