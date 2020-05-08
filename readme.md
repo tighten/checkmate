@@ -19,7 +19,11 @@ php -S localhost:8080 -t public
 ```
 
 ## Usage
-[todo]
+1. Run the following commands to populate the database:
+    1. Import Laravel Versions: `php artisan sync:laravel-versions`
+    1. Import projects: `php artisan sync:projects`
+    1. Sync project versions: `php artisan sync:packageversions`
+1. Visit the website in the browser
 
 ## Testing
 

@@ -28,7 +28,7 @@
 
         <div class="bg-frost font-sans relative z-0">
             <div class="max-w-lg mx-auto pt-8">
-                <p class="mb-6 text-black-lighter">Our projects n stuff?</p>
+                <p class="mb-6 text-black-lighter">Showing versions for {{ $projects->count() }} active packages</p>
 
                 <div class="rounded-lg shadow">
                     <ul class="bg-grey-blue-light flex list-reset p-4 rounded-t-lg border-grey border-b-2">
@@ -41,13 +41,15 @@
                         <li class="w-1/6 text-grey-darker font-semibold uppercase text-xs tracking-wide">Prescribed Laravel Version</li>
 
                         <li class="w-1/6 text-grey-darker font-semibold uppercase text-xs tracking-wide">Status</li>
+
+                        <li class="w-1/6 text-grey-darker font-semibold uppercase text-xs tracking-wide">Ignore</li>
                     </ul>
 
                     <section class="bg-white rounded-b-lg">
                         @foreach ($projects as $project)
                             <ul class="flex list-reset p-4 border-t border-smoke">
                                 <li class="w-2/6">
-                                    <a class="text-indigo no-underline text-md" href="#">
+                                    <a class="text-indigo no-underline text-md" href="{{ $project->github_url }}">
                                         {{ $project->name }}
                                     </a>
                                 </li>
@@ -59,6 +61,12 @@
                                 <li class="w-1/6 text-black-lightest">{{ $project->desired_laravel_version }}</li>
 
                                 <li class="w-1/6 text-black-lightest">{!! $project->presentStatus() !!}</li>
+
+                                <li class="w-1/6 text-black-lightest">
+                                    <label class="md:w-2/3 block text-gray-500 font-bold">
+                                        <input class="mr-2 leading-tight" type="checkbox">
+                                    </label>
+                                </li>
                             </ul>
                         @endforeach
                     </section>

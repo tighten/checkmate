@@ -2,13 +2,15 @@
 
 namespace App;
 
+use App\Exceptions\NotALaravelProjectException;
 use Github\Client as GitHubClient;
 use Illuminate\Cache\CacheManager;
 use stdClass;
 
 class GitInfoParser
 {
-    protected const CACHE_LENGTH = 300;
+    protected const CACHE_LENGTH = HOUR_IN_SECONDS;
+
     private $github;
     private $cache;
 
@@ -43,9 +45,13 @@ class GitInfoParser
 
     protected function laravelVersionFromComposerLock(stdclass $composerLock)
     {
-        return ltrim(collect($composerLock->packages)
-            ->firstWhere('name', 'laravel/framework')
-            ->version, 'v');
+        $laravelDetails = collect($composerLock->packages)->firstWhere('name', 'laravel/framework');
+
+        if (! $laravelDetails) {
+            throw new NotALaravelProjectException('Could not find laravel/framework in composer lock file');
+        }
+
+        return ltrim($laravelDetails->version, 'v');
     }
 
     protected function composerJsonForRepo($vendor, $project)

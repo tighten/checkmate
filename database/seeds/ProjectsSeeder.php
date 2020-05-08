@@ -28,6 +28,7 @@ class ProjectsSeeder extends Seeder
 			'ozzie',
 			'laracon-challenge',
 			'laracon-visitors-guide',
+            'consoles',
     	]);
     }
 }

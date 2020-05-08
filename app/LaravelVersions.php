@@ -50,7 +50,7 @@ class LaravelVersions
         while (true) {
             foreach ($result as $tag) {
                 if ($this->minorFromTag($tag['name']) == $minor) {
-                    $this->cache->put($this->cacheKeyForMinor($minor), $this->trim($tag['name']), 3600);
+                    $this->cache->put($this->cacheKeyForMinor($minor), $this->trim($tag['name']), HOUR_IN_SECONDS);
                     return $this->trim($tag['name']);
                 }
             }
@@ -62,7 +62,6 @@ class LaravelVersions
             $result = $paginator->fetchNext();
         }
 
-        // @todo: Why is it not matching <5.3? Is there a page limit?
         throw new Exception("Nothing matches minor version [{$minor}]; sorry!");
     }
 
