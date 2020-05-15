@@ -60,6 +60,11 @@ class Project extends Model
         return $query->where('ignored', 0);
     }
 
+    public function scopeIgnored($query)
+    {
+        return $query->where('ignored', 1);
+    }
+
     public function syncLaravelVersionAndConstraint()
     {
         try {
