@@ -23,7 +23,14 @@ class TailwindExtractor {
 mix.js('resources/js/app.js', 'public/js')
    .postCss('resources/css/main.css', 'public/css', [
         tailwindcss('tailwind.js'),
-   ]);
+   ])
+    .browserSync({
+        proxy: process.env.APP_URL || 'http://checkmate.test',
+        files: [
+            'public',
+            'resources/views',
+        ],
+    });
 
 // If you want to use LESS for your preprocessing
 // mix.less('resources/assets/less/main.less', 'public/css')
