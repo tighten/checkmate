@@ -8,7 +8,7 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,700" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/main.css">
 
-        <title>Version Check - Tighten</title>
+        <title>Checkmate - Tighten</title>
     </head>
 
     <body>
@@ -17,7 +17,7 @@
                 <section class="max-w-lg mx-auto">
                     <div class="flex justify-between items-center">
                         <p class="flex items-center">
-                            <span class="uppercase text-2xl leading-normal text-black-light font-semibold font-open-sans tracking-wide">Version Check</span>
+                            <span class="uppercase text-2xl leading-normal text-black-light font-semibold font-open-sans tracking-wide">Checkmate</span>
                         </p>
 
                         <p class="italic font-thin leading-normal text-grey-blue-darkest">Catchy phrase I guess?</p>
