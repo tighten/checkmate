@@ -2,7 +2,9 @@
 
 namespace App;
 
-use Github\Exception\RuntimeException;
+use App\Exceptions\ComposerJsonFileNotFound;
+use App\Exceptions\ComposerLockFileNotFound;
+use App\Exceptions\NotALaravelProject;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
@@ -11,6 +13,7 @@ class Project extends Model
 
     protected $casts = [
         'ignored' => 'boolean',
+        'is_valid' => 'boolean',
     ];
 
     public function getLaravelConstraintAttribute()
@@ -65,30 +68,40 @@ class Project extends Model
         return $query->where('ignored', 1);
     }
 
+    public function scopeValid($query)
+    {
+        return $query->where('is_valid', 1);
+    }
+
     public function syncLaravelVersionAndConstraint()
     {
         try {
             $currentVersion = app(GitInfoParser::class)->laravelVersion($this->vendor, $this->package);
             $constraint = app(GitInfoParser::class)->laravelConstraint($this->vendor, $this->package);
 
-            $updates = [];
+            $updates = [
+                'last_synced_at' => now(),
+            ];
 
-            // if the laravel version is different than what is in the database
             if ($this->current_laravel_version !== $currentVersion) {
                 $updates['current_laravel_version'] = $currentVersion;
             }
 
-            // if the current constraint is different than what is in the database
             if ($this->current_laravel_constraint !== $constraint) {
                 $updates['current_laravel_constraint'] = $constraint;
             }
 
-            $this->update($updates);
-        } catch (RuntimeException $e) {
-            // either the composer.json or composer.lock file doesn't exist for the repo
-            if ($e->getCode() === 404) {
-                $this->update(['ignored' => true]);
+            if (! $this->is_valid) {
+                $updates['is_valid'] = true;
             }
+
+            $this->update($updates);
+
+        } catch (ComposerJsonFileNotFound | ComposerLockFileNotFound | NotALaravelProject $e) {
+            $this->update([
+                'is_valid' => false,
+                'last_synced_at' => now(),
+            ]);
         }
     }
 }
