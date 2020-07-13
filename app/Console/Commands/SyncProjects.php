@@ -28,9 +28,6 @@ class SyncProjects extends Command
         $projects = Project::all();
         $gitHubRepos = $this->fetchRepos();
 
-        // Fetch all repos from the TightenCo GitHub account, and add any repos to the DB that do not
-        // already exist. Ignore any repos that are not PHP and are forks of other packages
-        // for now. New repos are active by default.
         $gitHubRepos->reject(function ($repo, $key) use ($projects) {
             $project = $projects->first(function ($project, $key) use ($repo) {
                 return strtolower($project->name) == strtolower($repo['name']);

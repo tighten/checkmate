@@ -2,8 +2,11 @@
 
 namespace App;
 
-use App\Exceptions\NotALaravelProjectException;
+use App\Exceptions\ComposerJsonFileNotFound;
+use App\Exceptions\ComposerLockFileNotFound;
+use App\Exceptions\NotALaravelProject;
 use Github\Client as GitHubClient;
+use Github\Exception\RuntimeException;
 use Illuminate\Cache\CacheManager;
 use stdClass;
 
@@ -48,7 +51,7 @@ class GitInfoParser
         $laravelDetails = collect($composerLock->packages)->firstWhere('name', 'laravel/framework');
 
         if (! $laravelDetails) {
-            throw new NotALaravelProjectException('Could not find laravel/framework in composer lock file');
+            throw new NotALaravelProject('laravel/framework does not exist in composer lock file');
         }
 
         return ltrim($laravelDetails->version, 'v');
@@ -56,12 +59,20 @@ class GitInfoParser
 
     protected function composerJsonForRepo($vendor, $project)
     {
-        return json_decode($this->fileForRepo($vendor, $project, 'composer.json'));
+        try {
+            return json_decode($this->fileForRepo($vendor, $project, 'composer.json'));
+        } catch (RuntimeException $e) {
+            throw new ComposerJsonFileNotFound("composer.json file does not exist for {$project}");
+        }
     }
 
     protected function composerLockForRepo($vendor, $project)
     {
-        return json_decode($this->fileForRepo($vendor, $project, 'composer.lock'));
+        try {
+            return json_decode($this->fileForRepo($vendor, $project, 'composer.lock'));
+        } catch (RuntimeException $e) {
+            throw new ComposerLockFileNotFound("composer.lock file does not exist for {$project}");
+        }
     }
 
     protected function fileForRepo($vendor, $project, $fileName)

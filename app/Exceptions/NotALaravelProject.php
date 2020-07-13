@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class NotALaravelProjectException extends Exception
+class NotALaravelProject extends Exception
 {
     //
 }
