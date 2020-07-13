@@ -17,7 +17,12 @@
                 <section class="max-w-xl mx-auto">
                     <div class="flex justify-between items-center">
                         <p class="flex items-center">
-                            <span class="uppercase text-2xl leading-normal text-black-light font-semibold font-open-sans tracking-wide">Checkmate</span>
+                            <a
+                                href="{{ route('project.index') }}"
+                                class="uppercase text-2xl leading-normal text-black-light font-semibold font-open-sans tracking-wide no-underline"
+                            >
+                                Checkmate
+                            </a>
                         </p>
 
                         <p class="italic font-thin leading-normal text-grey-blue-darkest">Catchy phrase I guess?</p>
