@@ -9,7 +9,9 @@ class IgnoredProjectController extends Controller
     public function index()
     {
         return view('ignored', [
-            'projects' => Project::ignored()->get(),
+            'projects' => Project::ignored()->get()->sortBy(function ($project) {
+                return strtolower($project->name);
+            }),
         ]);
     }
 }
