@@ -1,5 +1,6 @@
 # Checkmate
 
+Checkmate is a tool that allows users to quickly see which Tighten projects are behind their prescribed Laravel version.
 
 ## Installation
 
