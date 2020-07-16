@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Exceptions\NotALaravelProject;
 use App\Project;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -23,8 +24,23 @@ class SyncProjects extends Command
 
     public function handle()
     {
-        $this->info("Updating Tighten's projects");
+        $this->info("Updating Tighten's projects...");
 
+        $this->fetchValidRepositories();
+
+        $this->info('All data has been fetched.');
+
+        $this->line('Starting to process received repositories...');
+
+        $this->repositories->flatten(1)->each(function ($repository) {
+            $this->processRepository($repository);
+        });
+
+        $this->info('Projects are updated.');
+    }
+
+    private function fetchValidRepositories()
+    {
         do {
             $response = $this->sendRequest();
 
@@ -42,36 +58,6 @@ class SyncProjects extends Command
             }
 
         } while ($nextPage);
-
-        $this->info('All data has been fetched.');
-
-        $this->line('Starting to repositories...');
-
-        $this->repositories->flatten(1)->each(function ($repository) {
-            $this->line("Processing {$repository['vendor']}/{$repository['name']}...");
-
-            $project = Project::firstOrCreate([
-                'name' => $repository['name'],
-                'vendor' => $repository['vendor'],
-                'package' => $repository['name'],
-            ], [
-                'current_laravel_version' => $repository['current_version'],
-                'current_laravel_constraint' => $repository['constraint'],
-                'is_valid' => true,
-            ]);
-
-            if ($this->versionDataHasChanged($project, $repository)) {
-                $this->info("Updating {$project->name}'s version data...");
-
-                $project->update([
-                    'current_laravel_version' => $repository['current_version'],
-                    'current_laravel_constraint' => $repository['constraint'],
-                    'is_valid' => true,
-                ]);
-            }
-        });
-
-        $this->info('Projects are updated.');
     }
 
     private function sendRequest()
@@ -134,40 +120,57 @@ class SyncProjects extends Command
             $this->repositories = collect();
         }
 
-        $this->repositories->push(
-            collect(data_get($response, 'data.organization.repositories.edges'))
-                ->filter(function ($repository) {
-                    return $repository['node']['composerLock'];
-                })
-                ->map(function ($repository) {
+        $formattedRepositories = collect(data_get($response, 'data.organization.repositories.edges'))
+            // filter out repositories that do not have a composer.lock file
+            ->filter(function ($repository) {
+                return $repository['node']['composerLock'];
+            })
+            ->map(function ($repository) {
+                try {
+                    $laravelVersion = $this->extractLaravelVersionFromLockContents($repository);
+                } catch (NotALaravelProject $e) {
+                    $laravelVersion = null;
+                }
 
-                    $vendor = data_get($repository, 'node.owner.login');
+                return [
+                    'vendor' => data_get($repository, 'node.owner.login'),
+                    'name' => $repository['node']['name'],
+                    'current_version' => $laravelVersion,
+                    'constraint' => $this->extractConstraintFromJsonContents($repository),
+                ];
+            })
+            // filter out repositories that do not have a laravel/framework dependency
+            ->filter(function ($repository) {
+                return $repository['current_version'];
+            })
+            ->values();
 
-                    $composerJson = json_decode(data_get($repository, 'node.composerJson.text'), true);
+        $this->repositories->push($formattedRepositories);
+    }
 
-                    $constraint = data_get($composerJson, 'require.laravel/framework');
+    private function processRepository($repository)
+    {
+        $this->line("Processing {$repository['vendor']}/{$repository['name']}...");
 
-                    $laravelFramework = collect(
-                        json_decode(
-                            data_get($repository, 'node.composerLock.text'),
-                            true
-                        )['packages'])
-                        ->firstWhere('name', 'laravel/framework');
+        $project = Project::firstOrCreate([
+            'name' => $repository['name'],
+            'vendor' => $repository['vendor'],
+            'package' => $repository['name'],
+        ], [
+            'current_laravel_version' => $repository['current_version'],
+            'current_laravel_constraint' => $repository['constraint'],
+            'is_valid' => true,
+        ]);
 
-                    $laravelVersion = ltrim($laravelFramework['version'] ?? null, 'v');
+        if ($this->versionDataHasChanged($project, $repository)) {
+            $this->info("Updating {$project->name}'s version data...");
 
-                    return [
-                        'vendor' => $vendor,
-                        'name' => $repository['node']['name'],
-                        'current_version' => $laravelVersion,
-                        'constraint' => $constraint,
-                    ];
-                })
-                ->filter(function ($repository) {
-                    return $repository['current_version'];
-                })
-                ->values()
-        );
+            $project->update([
+                'current_laravel_version' => $repository['current_version'],
+                'current_laravel_constraint' => $repository['constraint'],
+                'is_valid' => true,
+            ]);
+        }
     }
 
     private function formatRepositoryFilters()
@@ -200,5 +203,25 @@ class SyncProjects extends Command
     private function constraintHasChanged($project, $constaint)
     {
         return $project->current_laravel_constraint !== $constaint;
+    }
+
+    private function extractLaravelVersionFromLockContents($repository)
+    {
+        $composerLockContents = json_decode(data_get($repository, 'node.composerLock.text'), true);
+
+        $laravelFrameworkEntry = collect($composerLockContents['packages'])->firstWhere('name', 'laravel/framework');
+
+        if (! $laravelFrameworkEntry) {
+            throw new NotALaravelProject('laravel/framework not found in lock file');
+        }
+
+        return ltrim($laravelFrameworkEntry['version'], 'v');
+    }
+
+    private function extractConstraintFromJsonContents($repository)
+    {
+        return data_get(
+            json_decode(data_get($repository, 'node.composerJson.text'), true), 'require.laravel/framework'
+        );
     }
 }
