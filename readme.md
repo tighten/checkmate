@@ -26,6 +26,8 @@ php -S localhost:8080 -t public
     1. Import projects and their version details: `php artisan sync:projects`
 1. Visit the website in the browser
 
+## Testing
+
 ```bash
 composer test
 ```
