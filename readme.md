@@ -28,8 +28,10 @@ php -S localhost:8080 -t public
 
 ## Testing
 
+Make sure to copy `.env.testing.example` to `.env.testing` and modify its contents to reflect your testing environment.
+
 ```bash
-composer test
+vendor/bin/phpunit
 ```
 
 ## Contributing
