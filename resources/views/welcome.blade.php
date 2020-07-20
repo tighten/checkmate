@@ -30,9 +30,9 @@
                             </a>
                         </li>
 
-                        <li class="w-1/6 text-black-lightest">{{ $project->laravel_constraint }}</li>
+                        <li class="w-1/6 text-black-lightest">{{ $project->current_laravel_constraint }}</li>
 
-                        <li class="w-1/6 text-black-lightest">{{ $project->laravel_version }}</li>
+                        <li class="w-1/6 text-black-lightest">{{ $project->current_laravel_version }}</li>
 
                         <li class="w-1/6 text-black-lightest">{{ $project->desired_laravel_version }}</li>
 
