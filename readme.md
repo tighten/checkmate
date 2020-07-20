@@ -10,20 +10,20 @@ Checkmate is a tool that allows users to quickly see which Tighten projects are 
 1. Make a new [Github token](https://github.com/settings/tokens/new) with the `repo` scope selected and save it in `.env` as `GITHUB_TOKEN`
 1. Generate an application key via the terminal: `php artisan key:generate`
 1. Create a database for the application and enter the database connection details in `.env`
-1. Run the database migrations and seeders: `php artisan migrate --seed`
+1. Run the database migrations and seeders: `php artisan migrate`
 1. Install the frontend dependencies: `npm install`
 1. Build the frontend dependencies: `npm run dev`
 1. Configure a web server, such as the [built-in PHP web server](https://www.php.net/manual/en/features.commandline.webserver.php) or [Laravel Valet](https://laravel.com/docs/master/valet), to use the public directory as the document root
-```
-# For the built-in PHP web server:
+
+For the built-in PHP web server:
+```bash
 php -S localhost:8080 -t public
 ```
 
 ## Usage
 1. Run the following commands to populate the database:
     1. Import Laravel Versions: `php artisan sync:laravel-versions`
-    1. Import projects: `php artisan sync:projects`
-    1. Sync project versions: `php artisan sync:project-versions`
+    1. Import projects and their version details: `php artisan sync:projects`
 1. Visit the website in the browser
 
 ## Testing
