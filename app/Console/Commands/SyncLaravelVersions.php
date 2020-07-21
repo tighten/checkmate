@@ -3,9 +3,8 @@
 namespace App\Console\Commands;
 
 use App\LaravelVersion;
-use Github\Client as GitHubClient;
-use Github\ResultPager as GitHubResultPager;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
 
 class SyncLaravelVersions extends Command
 {
@@ -13,26 +12,15 @@ class SyncLaravelVersions extends Command
 
     protected $description = 'Pull Laravel versions from GitHub into our application.';
 
-    private $github;
-
-    public function __construct(GitHubClient $github)
-    {
-        parent::__construct();
-
-        $this->github = $github;
-    }
+    private $defaultFilters = [
+        'first' => '100',
+        'refPrefix' => '"refs/tags/"',
+        'orderBy' => '{field: TAG_COMMIT_DATE, direction: DESC}',
+    ];
 
     public function handle()
     {
-        $versions = cache()->remember('github::laravel-versions', HOUR_IN_SECONDS, function () {
-            $repositoryApi = $this->github->api('repo');
-
-            $paginator = new GitHubResultPager($this->github);
-
-            return $paginator->fetchAll($repositoryApi, 'tags', ['laravel', 'framework']);
-        });
-
-        collect($versions)
+        $this->fetchVersionsFromGitHub()
             // Map into arrays containing major, minor, and patch numbers
             ->map(function ($item) {
                 $pieces = explode('.', ltrim($item['name'], 'v'));
@@ -77,5 +65,55 @@ class SyncLaravelVersions extends Command
             });
 
         $this->info('Finished Laravel versions to application');
+    }
+
+    private function fetchVersionsFromGitHub()
+    {
+        return cache()->remember('github::laravel-versions', HOUR_IN_SECONDS, function () {
+            $tags = collect();
+
+            do {
+                // Format the filters at runtime to include pagination
+                $filters = collect($this->defaultFilters)
+                    ->map(function ($value, $key) {
+                        return "{$key}: $value";
+                    })
+                    ->implode(', ');
+
+                $query = <<<QUERY
+                    {
+                      repository(owner: "laravel", name: "framework") {
+                        refs($filters) {
+                          nodes {
+                            name
+                          }
+                          pageInfo {
+                            endCursor
+                            hasNextPage
+                          }
+                        }
+                      }
+                      rateLimit {
+                        cost
+                        remaining
+                      }
+                    }
+                QUERY;
+
+                $response = Http::withToken(config('services.github.token'))
+                    ->post('https://api.github.com/graphql', ['query' => $query])
+                    ->json();
+
+                $tags->push(collect(data_get($response, 'data.repository.refs.nodes')));
+
+                $nextPage = data_get($response, 'data.repository.refs.pageInfo')['endCursor'];
+
+                if ($nextPage) {
+                    $this->defaultFilters['after'] = '"' . $nextPage . '"';
+                }
+            } while ($nextPage);
+
+            return $tags->flatten(1);
+        });
     }
 }

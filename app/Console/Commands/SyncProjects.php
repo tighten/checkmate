@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Exceptions\NotALaravelProject;
+use App\Exceptions\QueryException;
 use App\Project;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -45,8 +46,7 @@ class SyncProjects extends Command
             $response = $this->sendRequest();
 
             if (array_key_exists('errors', $response)) {
-                // @todo: proper error handling
-                dd('problem...', $response);
+                throw new QueryException(collect($response['errors'])->pluck('message')->implode(PHP_EOL));
             }
 
             $this->addRepositoriesFromResponse($response);

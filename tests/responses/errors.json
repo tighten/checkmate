@@ -1,0 +1,1 @@
+{"errors":[{"path":["query","organization","repositories","edges","node","names"],"extensions":{"code":"undefinedField","typeName":"Repository","fieldName":"names"},"locations":[{"line":8,"column":15}],"message":"Field 'names' doesn't exist on type 'Repository'"}]}
