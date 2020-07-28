@@ -170,6 +170,8 @@ class SyncProjects extends Command
                 'current_laravel_constraint' => $repository['constraint'],
                 'is_valid' => true,
             ]);
+
+            cache()->forget(sprintf(Project::DESIRED_VERSION_CACHE_KEY, $project->id));
         }
     }
 
