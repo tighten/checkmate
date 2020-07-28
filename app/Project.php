@@ -2,10 +2,8 @@
 
 namespace App;
 
-use App\Exceptions\ComposerJsonFileNotFound;
-use App\Exceptions\ComposerLockFileNotFound;
-use App\Exceptions\NotALaravelProject;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Project extends Model
 {
@@ -16,17 +14,34 @@ class Project extends Model
         'is_valid' => 'boolean',
     ];
 
+    public const DESIRED_VERSION_CACHE_KEY = 'project-desired-version--%s';
+
     public function getDesiredLaravelVersionAttribute()
     {
-        [$major, $minor] = explode('.', $this->current_laravel_version);
+        return cache()->remember(sprintf(self::DESIRED_VERSION_CACHE_KEY, $this->id), HOUR_IN_SECONDS, function () {
+            [$major, $minor] = explode('.', $this->current_laravel_version);
 
-        // @todo: cache this
-        $version = LaravelVersion::where([
-            'major' => $major,
-            'minor' => $minor,
-        ])->firstOrFail();
+            $query = LaravelVersion::query()->where('major', $major);
+            $sortColumn = 'minor';
 
-        return (string) $version;
+            // If checking against the legacy version scheme then we're focusing
+            // on the highest patch version within the set minor version
+            if ((int) $major <= 5) {
+                $query = $query->where('minor', $minor);
+                $sortColumn = 'patch';
+            }
+
+            return (string) $query->get()
+                ->tap(function ($collection) {
+                    if ($collection->count() === 0) {
+                        throw (new ModelNotFoundException)->setModel(Project::class);
+                    }
+                })
+                ->sortByDesc(function ($version) use ($sortColumn) {
+                    return (int) $version->$sortColumn;
+                })
+                ->first();
+        });
     }
 
     public function getGithubUrlAttribute()
