@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\LaravelVersion;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SyncLaravelVersions extends Command
 {
@@ -20,6 +21,8 @@ class SyncLaravelVersions extends Command
 
     public function handle()
     {
+        Log::info('Syncing Laravel Versions');
+
         $this->fetchVersionsFromGitHub()
             // Map into arrays containing major, minor, and patch numbers
             ->map(function ($item) {
@@ -64,7 +67,7 @@ class SyncLaravelVersions extends Command
                 return $version;
             });
 
-        $this->info('Finished Laravel versions to application');
+        Log::info('Finished Laravel versions to application');
     }
 
     private function fetchVersionsFromGitHub()
