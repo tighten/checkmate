@@ -8,6 +8,7 @@ use App\Project;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SyncProjects extends Command
 {
@@ -25,19 +26,15 @@ class SyncProjects extends Command
 
     public function handle()
     {
-        $this->info("Updating Tighten's projects...");
+        Log::info("Updating project versions");
 
         $this->fetchValidRepositories();
-
-        $this->info('All data has been fetched.');
-
-        $this->line('Starting to process received repositories...');
 
         $this->repositories->flatten(1)->each(function ($repository) {
             $this->processRepository($repository);
         });
 
-        $this->info('Projects are updated.');
+        Log::info('Projects versions are updated');
     }
 
     private function fetchValidRepositories()
@@ -105,8 +102,6 @@ class SyncProjects extends Command
             }
         QUERY;
 
-        $this->line("Sending request for {$this->defaultFilters['first']} repositories...");
-
         return Http::withToken(config('services.github.token'))
             ->post('https://api.github.com/graphql', ['query' => $query])
             ->json();
@@ -114,8 +109,6 @@ class SyncProjects extends Command
 
     private function addRepositoriesFromResponse(array $response)
     {
-        $this->line('Parsing response...');
-
         if (! $this->repositories instanceof Collection) {
             $this->repositories = collect();
         }
@@ -150,7 +143,7 @@ class SyncProjects extends Command
 
     private function processRepository($repository)
     {
-        $this->line("Processing {$repository['vendor']}/{$repository['name']}...");
+        Log::info("Processing {$repository['vendor']}/{$repository['name']}...");
 
         $project = Project::firstOrCreate([
             'name' => $repository['name'],
@@ -163,7 +156,7 @@ class SyncProjects extends Command
         ]);
 
         if ($this->versionDataHasChanged($project, $repository)) {
-            $this->info("Updating {$project->name}'s version data...");
+            Log::info("Updating {$project->name}'s version...");
 
             $project->update([
                 'current_laravel_version' => $repository['current_version'],
@@ -186,8 +179,6 @@ class SyncProjects extends Command
 
     private function setNextPage($page)
     {
-        $this->info('More data to fetch...');
-
         $this->defaultFilters['after'] = '"' . $page . '"';
     }
 
