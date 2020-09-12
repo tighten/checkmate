@@ -63,7 +63,7 @@ class SyncProjects extends Command
 
         $query = <<<QUERY
             {
-              organization(login: "tightenco") {
+              organization(login: "tighten") {
                 id
                 repositories($filters) {
                   totalCount

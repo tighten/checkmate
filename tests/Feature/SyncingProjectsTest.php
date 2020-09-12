@@ -52,7 +52,7 @@ class SyncingProjectsTest extends TestCase
     function updates_project_if_version_has_changed()
     {
         $project = factory(Project::class)->create([
-            'vendor' => 'tightenco',
+            'vendor' => 'tighten',
             'name' => 'checkmate',
             'package' => 'checkmate',
             'current_laravel_version' => '7.19.0',
@@ -71,7 +71,7 @@ class SyncingProjectsTest extends TestCase
     function update_project_if_constaint_has_changed()
     {
         $project = factory(Project::class)->create([
-            'vendor' => 'tightenco',
+            'vendor' => 'tighten',
             'name' => 'checkmate',
             'package' => 'checkmate',
             'current_laravel_constraint' => '^6.0',
