@@ -8,10 +8,16 @@ class ProjectController extends Controller
 {
     public function index()
     {
+        [$behind, $current] = Project::valid()->active()->get()->sortBy(function ($project) {
+            return strtolower($project->name);
+        })->partition(function ($project) {
+            return $project->is_behind_latest;
+        });
+
         return view('welcome', [
-            'projects' => Project::valid()->active()->get()->sortBy(function ($project) {
-                return strtolower($project->name);
-            }),
+            'count' => $behind->count() + $current->count(),
+            'behind' => $behind,
+            'current' => $current,
         ]);
     }
 }
