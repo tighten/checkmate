@@ -4,7 +4,7 @@
 <div class="bg-gray-100 font-sans relative z-0">
     <div class="max-w-6xl mx-auto pt-8">
         <p class="mb-6 text-black-lighter">
-            Showing versions for {{ $projects->count() }} active projects and packages
+            Showing versions for {{ $count }} active projects and packages
         </p>
         <div class="rounded-lg shadow">
             <ul class="bg-gray-400 flex list-reset p-4 rounded-t-lg border-gray border-b-2">
@@ -23,7 +23,7 @@
 
             <section class="bg-white rounded-b-lg">
                 @foreach ($projects as $project)
-                    <ul class="flex list-reset p-4 border-t border-smoke">
+                    <ul class="flex list-reset p-4 border-t border-smoke bg-red-100">
                         <li class="w-2/6">
                             <a class="text-indigo-700 hover:text-indigo-900 no-underline text-md" href="{{ $project->github_url }}">
                                 {{ $project->name }}
@@ -50,6 +50,7 @@
                     </ul>
                 @endforeach
             </section>
+
         </div>
     </div>
     <br><br>

@@ -8,10 +8,13 @@ class ProjectController extends Controller
 {
     public function index()
     {
+        $projects = Project::valid()->active()->get()->sortBy(function ($project) {
+            return $project->status;
+        });
+
         return view('welcome', [
-            'projects' => Project::valid()->active()->get()->sortBy(function ($project) {
-                return strtolower($project->name);
-            }),
+            'count' => $projects->count(),
+            'projects' => $projects,
         ]);
     }
 }
