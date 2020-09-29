@@ -37,11 +37,7 @@
                         <li class="w-1/6 text-black-lightest">{{ $project->desired_laravel_version }}</li>
 
                         <li class="w-1/6 text-black-lightest">
-                            @if ($project->is_behind_latest)
-                                <span class="font-bold text-red-700">BEHIND</span>
-                            @else
-                                <span class="text-green-700">CURRENT</span>
-                            @endif
+                            <span class="status-{{ $project->status }}">{{ strtoupper($project->status) }}</span>
                         </li>
 
                         <li class="w-1/6">

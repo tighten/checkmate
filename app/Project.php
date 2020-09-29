@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Project extends Model
 {
+    public const STATUS_BEHIND = 'behind';
+    public const STATUS_CURRENT = 'current';
+    public const STATUS_INSECURE = 'insecure';
+
     protected $guarded = ['id'];
 
     protected $casts = [
@@ -54,6 +58,35 @@ class Project extends Model
         return version_compare($this->desired_laravel_version, $this->current_laravel_version) > 0;
     }
 
+    public function getStatusAttribute()
+    {
+        if (!$this->is_behind_latest) {
+            return self::STATUS_CURRENT;
+        }
+
+        return $this->hasSecurityFixes() ? self::STATUS_BEHIND : self::STATUS_INSECURE;
+    }
+
+    private function hasSecurityFixes()
+    {
+        $major= explode('.', $this->current_laravel_version)[0];
+
+        if ($major === '8') {
+            // @see https://laravel.com/docs/8.x/releases#support-policy
+            return strtotime('September 8th, 2021') >= strtotime('today');
+        }
+        if ($major === '7') {
+            // @see https://laravel.com/docs/7.x/releases#support-policy
+            return strtotime('March 3rd, 2021') >= strtotime('today');
+        }
+        if ($major === '6') {
+            // @see https://laravel.com/docs/6.x/releases#support-policy
+            return strtotime('September 3rd, 2022') >= strtotime('today');
+        }
+
+        return false;
+    }
+
     public function scopeActive($query)
     {
         return $query->where('ignored', 0);
@@ -67,5 +100,20 @@ class Project extends Model
     public function scopeValid($query)
     {
         return $query->where('is_valid', 1);
+    }
+
+    public function isBehind()
+    {
+        return $this->status === self::STATUS_BEHIND;
+    }
+
+    public function isCurrent()
+    {
+        return $this->status === self::STATUS_CURRENT;
+    }
+
+    public function isInsecure()
+    {
+        return $this->status === self::STATUS_INSECURE;
     }
 }
