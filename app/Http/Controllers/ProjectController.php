@@ -9,11 +9,17 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::valid()->active()->get()->sortBy(function ($project) {
-            return $project->status;
+            // 1st Insecure | 2nd Behind | 3rd Current
+            if ($project->status === Project::STATUS_INSECURE) {
+                return 1;
+            }
+            if ($project->status === Project::STATUS_BEHIND) {
+                return 2;
+            }
+            return 3;
         });
 
         return view('welcome', [
-            'count' => $projects->count(),
             'projects' => $projects,
         ]);
     }
