@@ -52,7 +52,7 @@
             </section>
 
             <section class="bg-white rounded-b-lg">
-                @foreach ($current as $key => $project)
+                @foreach ($current as project)
                     <ul class="flex list-reset p-4 border-t border-smoke bg-green-100">
                         <li class="w-2/6">
                             <a class="text-indigo-700 hover:text-indigo-900 no-underline text-md" href="{{ $project->github_url }}">
