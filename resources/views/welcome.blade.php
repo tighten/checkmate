@@ -41,7 +41,7 @@
                         </li>
 
                         <li class="w-1/6">
-                            <form action="{{ route('project.ignore', $project) }}" method="POST">
+                            <form id="ignored" action="{{ route('project.ignore', $project) }}#ignored" method="POST">
                                 @method('PATCH')
                                 @csrf
                                 <input type="submit" value="Ignore" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded cursor-pointer">
@@ -52,7 +52,7 @@
             </section>
 
             <section class="bg-white rounded-b-lg">
-                @foreach ($current as $project)
+                @foreach ($current as $key => $project)
                     <ul class="flex list-reset p-4 border-t border-smoke bg-green-100">
                         <li class="w-2/6">
                             <a class="text-indigo-700 hover:text-indigo-900 no-underline text-md" href="{{ $project->github_url }}">
@@ -71,7 +71,7 @@
                         </li>
 
                         <li class="w-1/6">
-                            <form action="{{ route('project.ignore', $project) }}" method="POST">
+                            <form id="ignored" action="{{ route('project.ignore', $project) }}#ignored" method="POST">
                                 @method('PATCH')
                                 @csrf
                                 <input type="submit" value="Ignore" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded cursor-pointer">
