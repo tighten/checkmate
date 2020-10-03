@@ -4,15 +4,17 @@ namespace Tests\Unit;
 
 use App\LaravelVersion;
 use App\Project;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
+    use RefreshDatabase;
 
     /** @test */
     public function project_with_desired_version_has_current_status()
     {
-        LaravelVersion::create([
+        factory(LaravelVersion::class)->create([
             'major' => '6',
             'minor' => '3',
             'patch' => '0',
@@ -30,7 +32,7 @@ class ProjectTest extends TestCase
     /** @test */
     public function project_with_lower_version_has_behind_status()
     {
-        LaravelVersion::create([
+        factory(LaravelVersion::class)->create([
             'major' => '6',
             'minor' => '2',
             'patch' => '1',
@@ -48,7 +50,7 @@ class ProjectTest extends TestCase
     /** @test */
     public function project_with_lower_version_and_unsuported_laravel_has_insecure_status()
     {
-        LaravelVersion::create([
+        factory(LaravelVersion::class)->create([
             'major' => '5',
             'minor' => '1',
             'patch' => '20',
@@ -66,7 +68,7 @@ class ProjectTest extends TestCase
     /** @test */
     public function project_with_desired_version_has_current_status_despite_unsupported_laravel()
     {
-        LaravelVersion::create([
+        factory(LaravelVersion::class)->create([
             'major' => '5',
             'minor' => '1',
             'patch' => '20',
