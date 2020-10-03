@@ -3,22 +3,3 @@
 @tailwind components;
 
 @tailwind utilities;
-
-.status-insecure  {
-    --text-opacity: 1;
-    color: #c53030;
-    color: rgba(197, 48, 48, var(--text-opacity));
-    font-weight: 700;
-}
-
-.status-behind {
-    --text-opacity: 1;
-    color: #c53030;
-    color: rgba(197, 48, 48, var(--text-opacity));
-}
-
-.status-current {
-    --text-opacity: 1;
-    color: #2f855a;
-    color: rgba(47, 133, 90, var(--text-opacity));
-}

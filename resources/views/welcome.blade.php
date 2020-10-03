@@ -1,3 +1,10 @@
+<?php
+$colorByStatus = [
+    App\Project::STATUS_CURRENT => 'text-green-400',
+    App\Project::STATUS_BEHIND => 'text-red-700',
+    App\Project::STATUS_INSECURE => 'text-red-700 font-bold',
+]
+?>
 @extends('layouts.app')
 
 @section('content')
@@ -23,7 +30,7 @@
 
             <section class="bg-white rounded-b-lg">
                 @foreach ($projects as $project)
-                    <ul class="flex list-reset p-4 border-t border-smoke bg-red-100">
+                    <ul class="flex list-reset p-4 border-t border-smoke">
                         <li class="w-2/6">
                             <a class="text-indigo-700 hover:text-indigo-900 no-underline text-md" href="{{ $project->github_url }}">
                                 {{ $project->name }}
@@ -37,7 +44,7 @@
                         <li class="w-1/6 text-black-lightest">{{ $project->desired_laravel_version }}</li>
 
                         <li class="w-1/6 text-black-lightest">
-                            <span class="status-{{ $project->status }}">{{ strtoupper($project->status) }}</span>
+                            <span class="{{ $colorByStatus[$project->status] }}">{{ strtoupper($project->status) }}</span>
                         </li>
 
                         <li class="w-1/6">
