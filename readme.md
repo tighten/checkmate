@@ -6,13 +6,14 @@ Checkmate is a tool that allows users to quickly see which Laravel projects are 
 
 1. Clone the repository locally
 1. Run `./bin/setup.sh`
-1. Make a new [GitHub token](https://github.com/settings/tokens/new) with the `repo` scope selected and save it in `.env` as `GITHUB_TOKEN`
+1. Make a new [GitHub token](https://github.com/settings/tokens/new) with the `repo` and `read:org` scope selected and save it in `.env` as `GITHUB_TOKEN`
 1. Create a database for the application and enter the database connection details in `.env`
 1. Create a testing database for the application and enter the database connection details in `.env.testing`
 1. Run `./bin/db.sh`
 1. Configure a web server, such as the [built-in PHP web server](https://www.php.net/manual/en/features.commandline.webserver.php) or [Laravel Valet](https://laravel.com/docs/master/valet), to use the public directory as the document root
 
 For the built-in PHP web server:
+
 ```bash
 php -S localhost:8080 -t public
 ```
@@ -42,10 +43,10 @@ If you discover any security related issues, please email hello@tighten.co inste
 
 ## Credits
 
-- [marcusmoore](https://github.com/marcusmoore)
-- [ctroms](https://github.com/ctroms)
-- [mattstauffer](https://github.com/mattstauffer)
-- [All Contributors](../../contributors)
+-   [marcusmoore](https://github.com/marcusmoore)
+-   [ctroms](https://github.com/ctroms)
+-   [mattstauffer](https://github.com/mattstauffer)
+-   [All Contributors](../../contributors)
 
 ## License
 
