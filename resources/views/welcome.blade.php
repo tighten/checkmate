@@ -18,6 +18,8 @@
 
                 <li class="w-1/6 font-semibold uppercase text-xs tracking-wide">Status</li>
 
+								<li class="w-1/6 font-semibold uppercase text-xs tracking-wide">Security</li>
+
                 <li class="w-1/6 font-semibold uppercase text-xs tracking-wide">Ignore</li>
             </ul>
 
@@ -38,6 +40,10 @@
 
                         <li class="w-1/6 text-black-lightest">
                             <span class="font-bold text-red-700">BEHIND</span>
+                        </li>
+
+												<li class="w-1/6 text-black-lightest">
+                            <span class="font-bold {{ ($project->is_insecure) ? 'text-red-700' : 'text-green-700' }}">{{ ($project->is_insecure ? 'Insecure' : 'Secure') }}</span>
                         </li>
 
                         <li class="w-1/6">
@@ -68,6 +74,10 @@
 
                         <li class="w-1/6 text-black-lightest">
                             <span class="text-green-700">CURRENT</span>
+                        </li>
+
+												<li class="w-1/6 text-black-lightest">
+                            <span class="font-bold {{ ($project->is_insecure) ? 'text-red-700' : 'text-green-700' }}">{{ ($project->is_insecure ? 'Insecure' : 'Secure') }}</span>
                         </li>
 
                         <li class="w-1/6">

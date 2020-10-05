@@ -14,7 +14,39 @@ class Project extends Model
         'is_valid' => 'boolean',
     ];
 
+		protected $appends = [
+			'is_insecure'
+		];
+
     public const DESIRED_VERSION_CACHE_KEY = 'project-desired-version--%s';
+
+		public function getIsInsecureAttribute()
+		{
+				return $this->isInsecure() ? true : false;
+		}
+
+		private function isInsecure()
+		{
+				$major = (int) strstr($this->current_laravel_version, '.', true);
+
+				switch ($major) {
+					case 8:
+						return strtotime('September 8th, 2021') < strtotime('today');
+						break;
+
+					case 7:
+						return strtotime('March 3rd, 2021') < strtotime('today');
+						break;
+
+					case 6:
+						return strtotime('September 3rd, 2022') < strtotime('today');
+						break;
+
+					default:
+						return true;
+						break;
+				}
+		}
 
     public function getDesiredLaravelVersionAttribute()
     {
