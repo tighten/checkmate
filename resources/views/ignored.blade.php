@@ -23,13 +23,7 @@
                         </li>
 
                         <li class="w-1/2 text-right">
-                            <!-- <form action="{{ route('project.unignore', $project) }}" method="POST">
-                                @method('PATCH')
-                                @csrf
-                                <input type="submit" value="Un-Ignore" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded cursor-pointer">
-														</form> -->
-														<button onClick="ignoreProject({{$project->id}}, false);" data-id="{{$project->id}}" data-button="ignoreButton" type="button" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded cursor-pointer">Un-Ignore</button>
-														
+														<button onClick="ignoreProject({{$project->id}}, false);" type="button" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded cursor-pointer">Un-Ignore</button>
                         </li>
                     </ul>
                 @endforeach

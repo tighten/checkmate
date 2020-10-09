@@ -48,15 +48,7 @@ $colorByStatus = [
                         </li>
 
                         <li class="w-1/6">
-												<?php /*
-                            <form action="{{ route('project.ignore', $project) }}" method="POST">
-                                @method('PATCH')
-                                @csrf
-                                <input type="submit" value="Ignore" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded cursor-pointer">
-														</form>
-														*/ ?>
-                                <button onClick="ignoreProject({{$project->id}});" data-id="{{$project->id}}" data-button="ignoreButton" type="button" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded cursor-pointer">Ignore</button>
-
+														<button onClick="ignoreProject({{$project->id}});" type="button" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded cursor-pointer">Ignore</button>
                         </li>
                     </ul>
                 @endforeach
