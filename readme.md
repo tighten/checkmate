@@ -6,7 +6,7 @@ Checkmate is a tool that allows users to quickly see which Laravel projects are 
 
 1. Clone the repository locally
 1. Run `./bin/setup.sh`
-1. Make a new [GitHub token](https://github.com/settings/tokens/new) with the `repo` scope selected and save it in `.env` as `GITHUB_TOKEN`
+1. Make a new [GitHub token](https://github.com/settings/tokens/new) with the `repo` and `read:org` scope selected and save it in `.env` as `GITHUB_TOKEN`
 1. Create a database for the application and enter the database connection details in `.env`
 1. Create a testing database for the application and enter the database connection details in `.env.testing`
 1. Run `./bin/db.sh`
