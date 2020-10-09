@@ -10,6 +10,12 @@ class UnIgnoreProjectController extends Controller
     {
         $project->update(['ignored' => false]);
 
+				if (request()->wantsJson()) {
+					return response()->json([
+						'success' => true
+					], 200);
+				}
+
         return redirect()->back();
     }
 }
