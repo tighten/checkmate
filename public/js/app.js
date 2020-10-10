@@ -19112,7 +19112,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // window
 
 function ignoreProject(id) {
   var ignore = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-  var counterElement = document.getElementById('projectCounter');
+  var counterElement = document.getElementById('project_counter');
   var count = parseInt(counterElement.textContent);
   var route = ignore ? 'ignore' : 'unignore';
   axios.patch('/' + route + '/' + id).then(function (response) {
@@ -19125,7 +19125,12 @@ function ignoreProject(id) {
   });
 }
 
+function unignoreProject(id) {
+  ignoreProject(id, false);
+}
+
 global.ignoreProject = ignoreProject;
+global.unignoreProject = unignoreProject;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),

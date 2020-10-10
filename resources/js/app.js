@@ -22,7 +22,7 @@ require('./bootstrap');
 // });
 
 function ignoreProject(id, ignore = true) {
-	var counterElement = document.getElementById('projectCounter');
+	var counterElement = document.getElementById('project_counter');
 	var count = parseInt(counterElement.textContent);
 	
 	var route = (ignore) ? 'ignore' : 'unignore';
@@ -38,4 +38,9 @@ function ignoreProject(id, ignore = true) {
 	});
 }
 
+function unignoreProject(id) {
+	ignoreProject(id, false);
+}
+
 global.ignoreProject = ignoreProject;
+global.unignoreProject = unignoreProject;

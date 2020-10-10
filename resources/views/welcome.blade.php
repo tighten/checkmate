@@ -11,7 +11,7 @@ $colorByStatus = [
 <div class="bg-gray-100 font-sans relative z-0">
     <div class="max-w-6xl mx-auto pt-8">
         <p class="mb-6 text-black-lighter">
-            Showing versions for <span id="projectCounter">{{ $projects->count() }}</span> active projects and packages
+            Showing versions for <span id="project_counter">{{ $projects->count() }}</span> active projects and packages
         </p>
         <div class="rounded-lg shadow">
             <ul class="bg-gray-400 flex list-reset p-4 rounded-t-lg border-gray border-b-2">
