@@ -23,7 +23,7 @@
                         </li>
 
                         <li class="w-1/2 text-right">
-														<button onClick="unignoreProject({{$project->id}});" type="button" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded cursor-pointer">Un-Ignore</button>
+                            <button onClick="unignoreProject({{$project->id}});" type="button" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded cursor-pointer">Un-Ignore</button>
                         </li>
                     </ul>
                 @endforeach

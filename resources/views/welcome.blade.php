@@ -48,7 +48,7 @@ $colorByStatus = [
                         </li>
 
                         <li class="w-1/6">
-														<button onClick="ignoreProject({{$project->id}});" type="button" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded cursor-pointer">Ignore</button>
+                            <button onClick="ignoreProject({{$project->id}});" type="button" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded cursor-pointer">Ignore</button>
                         </li>
                     </ul>
                 @endforeach
