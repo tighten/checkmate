@@ -7,7 +7,7 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+// window.Vue = require('vue');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -15,8 +15,32 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+// Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
-const app = new Vue({
-    el: '#app'
-});
+// const app = new Vue({
+//     el: '#app'
+// });
+
+function ignoreProject(id, ignore = true) {
+	var counterElement = document.getElementById('project_counter');
+	var count = parseInt(counterElement.textContent);
+	
+	var route = (ignore) ? 'ignore' : 'unignore';
+
+	axios.patch('/' + route + '/' + id).then(function(response) {
+		if (response?.status === 200) {
+			document.getElementById('project_' + id).style.display = 'none';
+			counterElement.innerHTML = (count-1);
+		}
+		else {
+			alert('Sorry, something went wrong!');
+		}
+	});
+}
+
+function unignoreProject(id) {
+	ignoreProject(id, false);
+}
+
+global.ignoreProject = ignoreProject;
+global.unignoreProject = unignoreProject;

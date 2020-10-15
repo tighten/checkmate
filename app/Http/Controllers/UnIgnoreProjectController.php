@@ -9,7 +9,6 @@ class UnIgnoreProjectController extends Controller
     public function __invoke(Project $project)
     {
         $project->update(['ignored' => false]);
-
-        return redirect()->back();
+        return response()->json([], 200);
     }
 }

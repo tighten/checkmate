@@ -9,7 +9,6 @@ class IgnoreProjectController extends Controller
     public function __invoke(Project $project)
     {
         $project->update(['ignored' => true]);
-
-        return redirect()->back();
+        return response()->json([], 200);
     }
 }
