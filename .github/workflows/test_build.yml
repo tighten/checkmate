@@ -50,10 +50,10 @@ jobs:
       - name: Create DB and schemas
         env:
           DB_CONNECTION: sqlite
-          DB_DATABASE: database/consoles.sqlite
+          DB_DATABASE: database/checkmate.sqlite
         run: |
           mkdir -p database
-          touch database/consoles.sqlite
+          touch database/checkmate.sqlite
           php artisan migrate
       - name: Run PHP tests
         run: vendor/bin/phpunit
