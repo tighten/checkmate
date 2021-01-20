@@ -19,7 +19,7 @@ class ProjectController extends Controller
             return 3;
         });
 
-        if (auth()->guest()) {
+        if (auth()->guest() && ! (config('app.show_private_repos'))) {
             $projects = $projects->reject->is_private;
         }
 
