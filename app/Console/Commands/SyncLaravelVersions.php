@@ -104,12 +104,17 @@ class SyncLaravelVersions extends Command
                 QUERY;
 
                 $response = Http::withToken(config('services.github.token'))
-                    ->post('https://api.github.com/graphql', ['query' => $query])
-                    ->json();
+                    ->post('https://api.github.com/graphql', ['query' => $query]);
 
-                $tags->push(collect(data_get($response, 'data.repository.refs.nodes')));
+                $responseJson = $response->json();
 
-                $nextPage = data_get($response, 'data.repository.refs.pageInfo')['endCursor'];
+                if (! $response->ok()) {
+                    abort($response->getStatusCode(), 'Error connecting to GitHub: ' . $responseJson['message']);
+                }
+
+                $tags->push(collect(data_get($responseJson, 'data.repository.refs.nodes')));
+
+                $nextPage = data_get($responseJson, 'data.repository.refs.pageInfo')['endCursor'];
 
                 if ($nextPage) {
                     $this->defaultFilters['after'] = '"' . $nextPage . '"';
