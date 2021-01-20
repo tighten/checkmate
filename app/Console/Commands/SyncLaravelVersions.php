@@ -51,23 +51,27 @@ class SyncLaravelVersions extends Command
 
                 if (! $version) {
                     // Create it if it doesn't exist
-                    return LaravelVersion::create([
+                    $created = LaravelVersion::create([
                         'major' => $item['major'],
                         'minor' => $item['minor'],
                         'patch' => $item['patch'],
                     ]);
+
+                    $this->info('Created Laravel version ' . $created);
+                    return;
                 }
 
                 // Check if the current patch number is less
                 // than what exists and update if so
                 if ($version->patch < $item['patch']) {
                     $version->update(['patch' => $item['patch']]);
+                    $this->info('Updated Laravel version ' . $version . ' to use latest patch.');
                 }
 
                 return $version;
             });
 
-        Log::info('Finished Laravel versions to application');
+        $this->info('Finished saving Laravel versions.');
     }
 
     private function fetchVersionsFromGitHub()

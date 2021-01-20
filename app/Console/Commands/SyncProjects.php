@@ -26,19 +26,22 @@ class SyncProjects extends Command
 
     public function handle()
     {
-        Log::info("Updating project versions");
+        $this->info('Updating project data.');
 
+        $this->repositories = collect();
         $this->fetchValidRepositories();
 
         $this->repositories->flatten(1)->each(function ($repository) {
             $this->processRepository($repository);
         });
 
-        Log::info('Projects versions are updated');
+        $this->info('Finished saving project data.');
     }
 
     private function fetchValidRepositories()
     {
+        $this->info("Fetching repositories...\nGetting first page.");
+
         do {
             $response = $this->sendRequest();
 
@@ -51,6 +54,7 @@ class SyncProjects extends Command
             $nextPage = data_get($response, 'data.organization.repositories.pageInfo')['endCursor'];
 
             if ($nextPage) {
+                $this->info('Getting another page.');
                 $this->setNextPage($nextPage);
             }
 
@@ -109,12 +113,8 @@ class SyncProjects extends Command
 
     private function addRepositoriesFromResponse(array $response)
     {
-        if (! $this->repositories instanceof Collection) {
-            $this->repositories = collect();
-        }
-
         $formattedRepositories = collect(data_get($response, 'data.organization.repositories.edges'))
-            // filter out repositories that do not have a composer.lock file
+            // Filter out repositories that do not have a composer.lock file
             ->filter(function ($repository) {
                 return $repository['node']['composerLock'];
             })
@@ -132,18 +132,19 @@ class SyncProjects extends Command
                     'constraint' => $this->extractConstraintFromJsonContents($repository),
                 ];
             })
-            // filter out repositories that do not have a laravel/framework dependency
+            // Filter out repositories that do not have a laravel/framework dependency
             ->filter(function ($repository) {
                 return $repository['current_version'];
             })
             ->values();
 
+        $this->info('Storing ' . count($formattedRepositories) . ' repositories for processing.');
         $this->repositories->push($formattedRepositories);
     }
 
     private function processRepository($repository)
     {
-        Log::info("Processing {$repository['vendor']}/{$repository['name']}...");
+        $this->info("Processing {$repository['vendor']}/{$repository['name']}...");
 
         $project = Project::firstOrCreate([
             'name' => $repository['name'],
@@ -156,7 +157,7 @@ class SyncProjects extends Command
         ]);
 
         if ($this->versionDataHasChanged($project, $repository)) {
-            Log::info("Updating {$project->name}'s version...");
+            $this->info("Updating {$project->name}'s version...");
 
             $project->update([
                 'current_laravel_version' => $repository['current_version'],
@@ -202,10 +203,15 @@ class SyncProjects extends Command
     {
         $composerLockContents = json_decode(data_get($repository, 'node.composerLock.text'), true);
 
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            // May actually be a Laravel project, but it's broken somehow
+            throw new NotALaravelProject('Error decoding composer.lock for ' . $repository['node']['name']);
+        }
+
         $laravelFrameworkEntry = collect($composerLockContents['packages'])->firstWhere('name', 'laravel/framework');
 
         if (! $laravelFrameworkEntry) {
-            throw new NotALaravelProject('laravel/framework not found in lock file');
+            throw new NotALaravelProject('laravel/framework not found in lock file for ' . $repository['node']['name']);
         }
 
         return ltrim($laravelFrameworkEntry['version'], 'v');
