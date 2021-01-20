@@ -67,7 +67,7 @@ class SyncProjects extends Command
             {
               organization(login: "tighten") {
                 id
-                repositories($filters) {
+                repositories({$filters}) {
                   totalCount
                   edges {
                     node {
@@ -75,6 +75,7 @@ class SyncProjects extends Command
                       owner {
                         login
                       }
+                      isPrivate
                       composerJson: object(expression: "master:composer.json") {
                         id
                         ... on Blob {
@@ -128,6 +129,7 @@ class SyncProjects extends Command
                     'name' => $repository['node']['name'],
                     'current_version' => $laravelVersion,
                     'constraint' => $this->extractConstraintFromJsonContents($repository),
+                    'is_private' => $repository['node']['isPrivate'],
                 ];
             })
             // Filter out repositories that do not have a laravel/framework dependency
@@ -152,6 +154,7 @@ class SyncProjects extends Command
             'current_laravel_version' => $repository['current_version'],
             'current_laravel_constraint' => $repository['constraint'],
             'is_valid' => true,
+            'is_private' => $repository['is_private'],
         ]);
 
         if ($this->versionDataHasChanged($project, $repository)) {
@@ -161,6 +164,7 @@ class SyncProjects extends Command
                 'current_laravel_version' => $repository['current_version'],
                 'current_laravel_constraint' => $repository['constraint'],
                 'is_valid' => true,
+                'is_private' => $repository['is_private'],
             ]);
 
             cache()->forget(sprintf(Project::DESIRED_VERSION_CACHE_KEY, $project->id));

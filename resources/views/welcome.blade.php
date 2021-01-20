@@ -33,6 +33,8 @@ $backgroundColorByStatus = [
                 <li class="w-1/6 text-xs font-semibold tracking-wide uppercase">Status</li>
 
                 <li class="w-1/6 text-xs font-semibold tracking-wide uppercase">Ignore</li>
+
+                <li class="w-1/6 text-xs font-semibold tracking-wide uppercase">Private?</li>
             </ul>
 
             <section class="bg-white rounded-b-lg">
@@ -57,6 +59,8 @@ $backgroundColorByStatus = [
                         <li class="w-1/6">
                             <button onClick="ignoreProject({{$project->id}});" type="button" class="px-3 py-1 text-white bg-indigo-600 rounded cursor-pointer hover:bg-indigo-500">Ignore</button>
                         </li>
+
+                        <li class="w-1/6 text-black-lightest">{{ $project->is_private ? 'Private' : 'Public' }}</li>
                     </ul>
                 @endforeach
             </section>

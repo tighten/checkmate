@@ -15,6 +15,7 @@ $factory->define(Project::class, function (Faker $faker) {
         'current_laravel_constraint' => '^7.0',
         'is_valid' => true,
         'ignored' => false,
+        'is_private' => rand(0, 1),
     ];
 });
 

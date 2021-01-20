@@ -9,14 +9,14 @@ class AddPrivacyToProjectsTable extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            //
+            $table->boolean('is_private')->default(true);
         });
     }
 
     public function down()
     {
         Schema::table('projects', function (Blueprint $table) {
-            //
+            $table->dropColumn('is_private');
         });
     }
 }
