@@ -6,9 +6,7 @@ use App\Exceptions\NotALaravelProject;
 use App\Exceptions\QueryException;
 use App\Project;
 use Illuminate\Console\Command;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class SyncProjects extends Command
 {
