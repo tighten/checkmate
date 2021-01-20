@@ -19,6 +19,10 @@ class ProjectController extends Controller
             return 3;
         });
 
+        if (auth()->guest()) {
+            $projects = $projects->reject->is_private;
+        }
+
         return view('welcome', [
             'projects' => $projects,
         ]);
