@@ -16,7 +16,7 @@ class ViewProjectsTest extends TestCase
         factory(Project::class)->create(['name' => 'my-awesome-project']);
         factory(Project::class)->state('ignored')->create(['name' => 'my-ignored-project']);
 
-        $this->get(route('project.index'))
+        $this->get(route('projects.index'))
             ->assertSeeText('my-awesome-project')
             ->assertDontSeeText('my-ignored-project');
     }
@@ -38,7 +38,7 @@ class ViewProjectsTest extends TestCase
         factory(Project::class)->state('private')->create(['name' => 'my-private-project']);
         factory(Project::class)->create(['name' => 'my-awesome-project']);
 
-        $this->get(route('project.index'))
+        $this->get(route('projects.index'))
             ->assertDontSeeText('my-private-project');
     }
 

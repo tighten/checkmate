@@ -15,7 +15,7 @@ class IgnoreProjectTest extends TestCase
     {
         $project = factory(Project::class)->create(['ignored' => false]);
 
-        $this->patch(route('project.ignore', $project));
+        $this->patch(route('projects.ignore', $project));
 
         $this->assertTrue($project->fresh()->ignored);
     }

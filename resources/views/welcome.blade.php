@@ -17,8 +17,9 @@ $backgroundColorByStatus = [
 @section('content')
 <div class="relative z-0 font-sans bg-gray-100">
     <div class="max-w-6xl pt-8 mx-auto">
+        <a href="{{ route('ignored.index') }}" class="float-right text-indigo-700 no-underline hover:text-indigo-900 hover:underline">View ignored projects</a>
         <p class="mb-6 text-black-lighter">
-            Showing versions for <span id="project_counter">{{ $projects->count() }}</span> active projects and packages
+            Showing <span id="project_counter">{{ $projects->count() }}</span> active projects and packages
         </p>
         <div class="rounded-lg shadow">
             <ul class="flex p-4 bg-gray-400 border-b-2 rounded-t-lg list-reset border-gray">
@@ -41,7 +42,7 @@ $backgroundColorByStatus = [
                 @foreach ($projects as $project)
                     <ul id="project_{{ $project->id }}" class="flex list-reset p-4 border-t border-smoke {{ $backgroundColorByStatus[$project->status] }}">
                         <li class="w-2/6">
-                            <a class="text-indigo-700 no-underline hover:text-indigo-900 text-md" href="{{ $project->github_url }}">
+                            <a class="text-indigo-700 no-underline hover:text-indigo-900 hover:underline text-md" href="{{ $project->github_url }}">
                                 {{ $project->name }}
                             </a>
                         </li>

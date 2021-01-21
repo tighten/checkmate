@@ -1,11 +1,11 @@
-<div class="bg-white border-t-4 border-indigo-700 relative z-10 shadow">
+<div class="relative z-10 bg-white border-t-4 border-indigo-700 shadow">
     <div class="p-2">
         <section class="max-w-6xl mx-auto">
-            <div class="flex justify-between items-center">
+            <div class="flex items-center justify-between">
                 <p class="flex items-center">
                     <a
-                        href="{{ route('project.index') }}"
-                        class="uppercase text-2xl leading-normal text-black-light font-semibold font-open-sans tracking-wide no-underline"
+                        href="{{ route('projects.index') }}"
+                        class="text-2xl font-semibold leading-normal tracking-wide no-underline uppercase text-black-light font-open-sans"
                     >
                         Checkmate
                     </a>
