@@ -15,10 +15,18 @@ $factory->define(Project::class, function (Faker $faker) {
         'current_laravel_constraint' => '^7.0',
         'is_valid' => true,
         'ignored' => false,
-        'is_private' => rand(0, 1),
+        'is_private' => false,
     ];
 });
 
 $factory->state(Project::class, 'ignored', [
     'ignored' => true,
+]);
+
+$factory->state(Project::class, 'private', [
+    'is_private' => true,
+]);
+
+$factory->state(Project::class, 'public', [
+    'is_private' => false,
 ]);
