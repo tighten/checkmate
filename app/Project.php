@@ -60,7 +60,9 @@ class Project extends Model
 
     public function getStatusAttribute()
     {
-        if (! $this->is_behind_latest) {
+        $major = explode('.', $this->current_laravel_version)[0];
+
+        if (! $this->is_behind_latest && $major > 5) {
             return self::STATUS_CURRENT;
         }
 
