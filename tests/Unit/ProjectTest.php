@@ -66,7 +66,7 @@ class ProjectTest extends TestCase
     }
 
     /** @test */
-    public function project_with_desired_version_has_current_status_despite_unsupported_laravel()
+    public function project_with_desired_version_has_insecure_status_because_unsupported_laravel()
     {
         factory(LaravelVersion::class)->create([
             'major' => '5',
@@ -79,7 +79,7 @@ class ProjectTest extends TestCase
 
         $status = $project->status;
 
-        $this->assertSame(Project::STATUS_CURRENT, $status);
-        $this->assertTrue($project->isCurrent());
+        $this->assertSame(Project::STATUS_INSECURE, $status);
+        $this->assertTrue($project->isInsecure());
     }
 }
