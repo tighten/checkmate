@@ -12,7 +12,7 @@ class ProjectController extends Controller
 
         $projects = Project::valid()->active()->get()->sortBy([
             fn($a, $b) => $statusSorts[$a->status] <=> $statusSorts[$b->status],
-            fn($a, $b) => $a->current_laravel_version <=> $b->current_laravel_version,
+            fn($a, $b) => explode('.', $a->current_laravel_version) <=> explode('.', $b->current_laravel_version),
         ]);
 
         if (auth()->guest() && ! (config('app.show_private_repos'))) {
