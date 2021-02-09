@@ -11,7 +11,7 @@ class Project extends Model
     public const STATUS_CURRENT = 'current';
     public const STATUS_INSECURE = 'insecure';
 
-    protected $guarded = ['id']; 
+    protected $guarded = ['id'];
 
     protected $casts = [
         'ignored' => 'boolean',

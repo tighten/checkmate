@@ -169,7 +169,7 @@ class SyncProjects extends Command
 
             cache()->forget(sprintf(Project::DESIRED_VERSION_CACHE_KEY, $project->id));
         }
-    } 
+    }
 
     private function formatRepositoryFilters()
     {
