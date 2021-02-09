@@ -68,7 +68,7 @@ class SyncLaravelVersions extends Command
                     $this->info('Updated Laravel version ' . $version . ' to use latest patch.');
                 }
 
-                return $version;
+                return $version; 
             });
 
         $this->info('Finished saving Laravel versions.');

@@ -15,8 +15,8 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(SyncLaravelVersions::class)->twiceDaily(1, 13);
-        $schedule->command(SyncProjects::class)->twiceDaily(2, 14);
+        $schedule->command(SyncLaravelVersions::class)->everyTenMinutes();
+        $schedule->command(SyncProjects::class)->everyTenMinutes();
     }
 
     protected function commands()
