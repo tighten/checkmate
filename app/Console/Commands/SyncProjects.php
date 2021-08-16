@@ -2,9 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Actions\ExtractRepositoryLaravelActionVersion;
+use App\Actions\SyncProject;
 use App\Exceptions\NotALaravelProject;
 use App\Exceptions\QueryException;
-use App\Project;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
@@ -76,13 +77,13 @@ class SyncProjects extends Command
                         login
                       }
                       isPrivate
-                      composerJson: object(expression: "master:composer.json") {
+                      composerJson: object(expression: "main:composer.json") {
                         id
                         ... on Blob {
                           text
                         }
                       }
-                      composerLock: object(expression: "master:composer.lock") {
+                      composerLock: object(expression: "main:composer.lock") {
                         id
                         ... on Blob {
                           text
@@ -119,7 +120,7 @@ class SyncProjects extends Command
             })
             ->map(function ($repository) {
                 try {
-                    $laravelVersion = $this->extractLaravelVersionFromLockContents($repository);
+                    $laravelVersion = (new ExtractRepositoryLaravelActionVersion())($repository);
                 } catch (NotALaravelProject $e) {
                     $laravelVersion = null;
                 }
@@ -146,28 +147,8 @@ class SyncProjects extends Command
     {
         $this->info("Processing {$repository['vendor']}/{$repository['name']}...");
 
-        $project = Project::firstOrCreate([
-            'name' => $repository['name'],
-            'vendor' => $repository['vendor'],
-            'package' => $repository['name'],
-        ], [
-            'current_laravel_version' => $repository['current_version'],
-            'current_laravel_constraint' => $repository['constraint'],
-            'is_valid' => true,
-            'is_private' => $repository['is_private'],
-        ]);
-
-        if ($this->versionDataHasChanged($project, $repository)) {
-            $this->info("Updating {$project->name}'s version...");
-
-            $project->update([
-                'current_laravel_version' => $repository['current_version'],
-                'current_laravel_constraint' => $repository['constraint'],
-                'is_valid' => true,
-                'is_private' => $repository['is_private'],
-            ]);
-
-            cache()->forget(sprintf(Project::DESIRED_VERSION_CACHE_KEY, $project->id));
+        if ($message = (new SyncProject())($repository)) {
+            $this->info($message);
         }
     }
 
@@ -183,40 +164,6 @@ class SyncProjects extends Command
     private function setNextPage($page)
     {
         $this->defaultFilters['after'] = '"' . $page . '"';
-    }
-
-    private function versionDataHasChanged($project, $repository)
-    {
-        return $this->versionHasChanged($project, $repository['current_version'])
-            || $this->constraintHasChanged($project, $repository['constraint']);
-    }
-
-    private function versionHasChanged($project, $currentVersion)
-    {
-        return $project->current_laravel_version !== $currentVersion;
-    }
-
-    private function constraintHasChanged($project, $constaint)
-    {
-        return $project->current_laravel_constraint !== $constaint;
-    }
-
-    private function extractLaravelVersionFromLockContents($repository)
-    {
-        $composerLockContents = json_decode(data_get($repository, 'node.composerLock.text'), true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            // May actually be a Laravel project, but it's broken somehow
-            throw new NotALaravelProject('Error decoding composer.lock for ' . $repository['node']['name']);
-        }
-
-        $laravelFrameworkEntry = collect($composerLockContents['packages'])->firstWhere('name', 'laravel/framework');
-
-        if (! $laravelFrameworkEntry) {
-            throw new NotALaravelProject('laravel/framework not found in lock file for ' . $repository['node']['name']);
-        }
-
-        return ltrim($laravelFrameworkEntry['version'], 'v');
     }
 
     private function extractConstraintFromJsonContents($repository)
