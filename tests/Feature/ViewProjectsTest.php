@@ -47,6 +47,8 @@ class ViewProjectsTest extends TestCase
     /** @test */
     function private_projects_dont_show_on_ignored_page()
     {
+        config()->set('app.show_private_repos', false);
+
         factory(Project::class)->states('private', 'ignored')->create(['name' => 'my-ignored-private-project']);
 
         $this->get(route('ignored.index'))
