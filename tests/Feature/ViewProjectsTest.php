@@ -35,6 +35,8 @@ class ViewProjectsTest extends TestCase
     /** @test */
     function private_projects_dont_show_on_home_page()
     {
+        config()->set('app.show_private_repos', false);
+
         factory(Project::class)->state('private')->create(['name' => 'my-private-project']);
         factory(Project::class)->create(['name' => 'my-awesome-project']);
 
