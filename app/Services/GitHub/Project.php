@@ -13,7 +13,6 @@ class Project
     public $currentLaravelConstraint;
     public $isPrivate;
 
-
     public function __construct(array $repository)
     {
         $this->name = $repository['name'];
