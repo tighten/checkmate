@@ -60,7 +60,7 @@ class SyncProjects extends Command
         } while ($nextPage);
     }
 
-    private function sendRequest()
+    private function sendRequest(): array
     {
         $filters = $this->formatRepositoryFilters();
 
