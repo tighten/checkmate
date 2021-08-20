@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\SendStatsToSlack;
 use App\Console\Commands\SyncLaravelVersions;
 use App\Console\Commands\SyncProjects;
 use Illuminate\Console\Scheduling\Schedule;
@@ -17,11 +18,16 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command(SyncLaravelVersions::class)->everyTenMinutes();
         $schedule->command(SyncProjects::class)->everyTenMinutes();
+
+        $schedule->command(SendStatsToSlack::class)
+            ->weekly()
+            ->fridays()
+            ->at('06:00');
     }
 
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
