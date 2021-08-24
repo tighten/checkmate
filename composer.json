@@ -13,6 +13,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.56",
         "laravel/legacy-factories": "^1.1",
+        "nathanheffley/laravel-slack-blocks": "^2.3",
         "laravel/tinker": "^2.5",
         "stevegrunwell/time-constants": "^1.1"
     },

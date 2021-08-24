@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "84b6d96ffb5319ab1de14ee5387c52de",
+    "content-hash": "9bab125ab7b70160241987503c2fe151",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1775,6 +1775,67 @@
             "time": "2020-10-27T14:25:32+00:00"
         },
         {
+            "name": "laravel/slack-notification-channel",
+            "version": "v2.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/slack-notification-channel.git",
+                "reference": "f428e76b8d0a0a2ff413ab225eeb829b9a8ffc20"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/slack-notification-channel/zipball/f428e76b8d0a0a2ff413ab225eeb829b9a8ffc20",
+                "reference": "f428e76b8d0a0a2ff413ab225eeb829b9a8ffc20",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0|^7.0",
+                "illuminate/notifications": "~5.8.0|^6.0|^7.0|^8.0",
+                "php": "^7.1.3|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Illuminate\\Notifications\\SlackChannelServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\Notifications\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Slack Notification Channel for laravel.",
+            "keywords": [
+                "laravel",
+                "notifications",
+                "slack"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/slack-notification-channel/issues",
+                "source": "https://github.com/laravel/slack-notification-channel/tree/v2.3.1"
+            },
+            "time": "2021-01-26T20:04:54+00:00"
+        },
+        {
             "name": "laravel/tinker",
             "version": "v2.6.1",
             "source": {
@@ -2280,6 +2341,66 @@
                 }
             ],
             "time": "2021-07-23T07:42:52+00:00"
+        },
+        {
+            "name": "nathanheffley/laravel-slack-blocks",
+            "version": "v2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nathanheffley/laravel-slack-blocks.git",
+                "reference": "dc0795cfce554f27697e8cee3965b4b1dde956c8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nathanheffley/laravel-slack-blocks/zipball/dc0795cfce554f27697e8cee3965b4b1dde956c8",
+                "reference": "dc0795cfce554f27697e8cee3965b4b1dde956c8",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0|^7.0",
+                "laravel/slack-notification-channel": "^2.0",
+                "php": "^7.1.3|^8.0"
+            },
+            "require-dev": {
+                "illuminate/notifications": "~5.8.0|^6.0|^7.0|^8.0",
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "NathanHeffley\\LaravelSlackBlocks\\SlackChannelServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "NathanHeffley\\LaravelSlackBlocks\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nathan Heffley",
+                    "email": "nathan@nathanheffley.com"
+                }
+            ],
+            "description": "Slack Blocks support for laravel notifications.",
+            "keywords": [
+                "blocks",
+                "laravel",
+                "notifications",
+                "slack"
+            ],
+            "support": {
+                "issues": "https://github.com/nathanheffley/laravel-slack-blocks/issues",
+                "source": "https://github.com/nathanheffley/laravel-slack-blocks/tree/v2.3.0"
+            },
+            "time": "2020-12-01T19:20:19+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -3368,20 +3489,17 @@
         },
         {
             "name": "stevegrunwell/time-constants",
-            "version": "v1.1.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stevegrunwell/time-constants.git",
-                "reference": "b9bfb7d39f55308268ef8dffcf1452cef96dc2b2"
+                "reference": "92036a0d000e53831da48ed72cf57281dbf2879a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stevegrunwell/time-constants/zipball/b9bfb7d39f55308268ef8dffcf1452cef96dc2b2",
-                "reference": "b9bfb7d39f55308268ef8dffcf1452cef96dc2b2",
+                "url": "https://api.github.com/repos/stevegrunwell/time-constants/zipball/92036a0d000e53831da48ed72cf57281dbf2879a",
+                "reference": "92036a0d000e53831da48ed72cf57281dbf2879a",
                 "shasum": ""
-            },
-            "require": {
-                "php": "^7.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.13",
@@ -3409,7 +3527,7 @@
                 "issues": "https://github.com/stevegrunwell/time-constants/issues",
                 "source": "https://github.com/stevegrunwell/time-constants"
             },
-            "time": "2019-11-25T18:13:08+00:00"
+            "time": "2019-01-02T04:44:53+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -6344,26 +6462,27 @@
         },
         {
             "name": "fzaninotto/faker",
-            "version": "v1.9.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "848d8125239d7dbf8ab25cb7f054f1a630e68c2e"
+                "reference": "5ffe7db6c80f441f150fc88008d64e64af66634b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/848d8125239d7dbf8ab25cb7f054f1a630e68c2e",
-                "reference": "848d8125239d7dbf8ab25cb7f054f1a630e68c2e",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/5ffe7db6c80f441f150fc88008d64e64af66634b",
+                "reference": "5ffe7db6c80f441f150fc88008d64e64af66634b",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3 || ^7.0"
+                "php": "^5.3.3 || ^7.0 || ^8.0"
             },
             "require-dev": {
                 "ext-intl": "*",
                 "phpunit/phpunit": "^4.8.35 || ^5.7",
                 "squizlabs/php_codesniffer": "^2.9.2"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -6392,10 +6511,10 @@
             ],
             "support": {
                 "issues": "https://github.com/fzaninotto/Faker/issues",
-                "source": "https://github.com/fzaninotto/Faker/tree/v1.9.2"
+                "source": "https://github.com/fzaninotto/Faker/tree/master"
             },
             "abandoned": true,
-            "time": "2020-12-11T09:56:16+00:00"
+            "time": "2020-12-11T09:59:14+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",
