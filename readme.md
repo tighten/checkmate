@@ -28,7 +28,7 @@ Slackbot is configured to send a weekly (Friday, 6:00 am) list of your `Insecure
 1. Create an app in your Slack organization
 2. Configure your Slack app for the channels you want to receive the notification.
 3. Create an Incoming Webhook for your app
-4. Paste the webhook as the `SHOW_PRIVATE_REPOS` value in your `.env` file
+4. Paste the webhook as the `SLACK_WEBHOOK_URL` value in your `.env` file
 
 ## Testing
 
