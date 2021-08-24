@@ -6,23 +6,23 @@
     "require": {
         "php": "^7.4|^8.0",
         "ext-json": "*",
-        "bugsnag/bugsnag-laravel": "^2.0",
+        "bugsnag/bugsnag-laravel": "^2.22",
         "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.0",
+        "laravel/framework": "^8.56",
         "laravel/legacy-factories": "^1.1",
-        "laravel/tinker": "^2.0",
         "nathanheffley/laravel-slack-blocks": "^2.3",
+        "laravel/tinker": "^2.5",
         "stevegrunwell/time-constants": "^1.1"
     },
     "require-dev": {
-        "facade/ignition": "^2.3.6",
+        "facade/ignition": "^2.5",
         "fzaninotto/faker": "^1.9.1",
-        "mockery/mockery": "^1.3.1",
+        "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.0"
+        "phpunit/phpunit": "^9.3.3"
     },
     "autoload": {
         "classmap": [
@@ -40,8 +40,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {
