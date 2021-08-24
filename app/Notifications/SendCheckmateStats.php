@@ -37,54 +37,62 @@ class SendCheckmateStats extends Notification
             });
 
         app(Project::class)->all()
-            ->filter(function($project) {
-                return ! config('app.show_private_repos')
-                    ? $project->status !== Project::STATUS_CURRENT && ! $project->is_private
-                    : $project->status !== Project::STATUS_CURRENT;
+            ->reject(function ($project) {
+                return $project->status === Project::STATUS_CURRENT;
+            })
+            ->when(! config('app.show_private_repos'), function ($collection) {
+                return $collection->reject(function ($project) {
+                    return $project->is_private;
+                });
             })
             ->sortByDesc('status')
             ->each(function ($project) use ($message) {
-                $message->attachment(function ($attachment) use ($project) {
-                    $scoreMoji = $project->status === Project::STATUS_INSECURE ? ':exclamation: ' : ':warning: ';
-                    $hexColor = $project->status === Project::STATUS_INSECURE ? '#cc0000' : '#F9C336';
-                    $attachment
-                        ->color($hexColor)
-                        ->block(function ($block) use ($project) {
-                            $block
-                                ->type('section')
-                                ->text([
-                                    'type' => 'mrkdwn',
-                                    'text' => sprintf(
-                                        '*<%s|%s/%s>*',
-                                        $project->githubUrl,
-                                        $project->vendor,
-                                        $project->package
-                                    ),
-                                ]);
-                        })
-                        ->block(function ($block) use ($project, $scoreMoji) {
-                            $block
-                                ->type('context')
-                                ->elements([
-                                    [
-                                        'type' => 'plain_text',
-                                        'emoji' => true,
-                                        'text' => $scoreMoji,
-                                    ],
-                                    [
-                                        'type' => 'mrkdwn',
-                                        'text' => sprintf(
-                                            "Current Version: %s\t\t\tPrescribed Version Status: %s",
-                                            $project->current_laravel_version,
-                                            $project->desiredLaravelVersion,
-                                        ),
-                                    ],
-                                ]);
-                        })
-                        ->dividerBlock();
-                });
+                $this->appendProjectToMessage($message, $project);
         });
 
         return $message;
+    }
+
+    private function appendProjectToMessage($message, Project $project)
+    {
+        return $message->attachment(function ($attachment) use ($project) {
+            $scoreMoji = $project->status === Project::STATUS_INSECURE ? ':exclamation: ' : ':warning: ';
+            $hexColor = $project->status === Project::STATUS_INSECURE ? '#cc0000' : '#F9C336';
+            $attachment
+                ->color($hexColor)
+                ->block(function ($block) use ($project) {
+                    $block
+                        ->type('section')
+                        ->text([
+                            'type' => 'mrkdwn',
+                            'text' => sprintf(
+                                '*<%s|%s/%s>*',
+                                $project->githubUrl,
+                                $project->vendor,
+                                $project->package
+                            ),
+                        ]);
+                })
+                ->block(function ($block) use ($project, $scoreMoji) {
+                    $block
+                        ->type('context')
+                        ->elements([
+                            [
+                                'type' => 'plain_text',
+                                'emoji' => true,
+                                'text' => $scoreMoji,
+                            ],
+                            [
+                                'type' => 'mrkdwn',
+                                'text' => sprintf(
+                                    "Current Version: %s\t\t\tPrescribed Version Status: %s",
+                                    $project->current_laravel_version,
+                                    $project->desiredLaravelVersion,
+                                ),
+                            ],
+                        ]);
+                })
+                ->dividerBlock();
+        });
     }
 }
