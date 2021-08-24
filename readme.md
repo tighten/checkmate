@@ -20,8 +20,15 @@ php -S localhost:8080 -t public
 
 1. Run the following commands to populate the database:
     1. Import Laravel Versions: `php artisan sync:laravel-versions`
-    1. Import projects and their version details: `php artisan sync:projects`
-1. Visit the website in the browser
+    2. Import projects and their version details: `php artisan sync:projects`
+    3. Visit the website in the browser
+
+## Slackbot (optional)
+Slackbot is configured to send a weekly (Friday, 6:00 am) list of your `Insecure` and `Behind` apps to a selected Slack channel. To set up:
+1. Create an app in your Slack organization
+2. Configure your Slack app for the channels you want to receive the notification.
+3. Create an Incoming Webhook for your app
+4. Paste the webhook as the `SHOW_PRIVATE_REPOS` value in your `.env` file
 
 ## Testing
 

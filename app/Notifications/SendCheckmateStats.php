@@ -38,7 +38,9 @@ class SendCheckmateStats extends Notification
 
         app(Project::class)->all()
             ->filter(function($project) {
-                return $project->status !== Project::STATUS_CURRENT;
+                return ! config('app.show_private_repos')
+                    ? $project->status !== Project::STATUS_CURRENT && ! $project->is_private
+                    : $project->status !== Project::STATUS_CURRENT;
             })
             ->sortByDesc('status')
             ->each(function ($project) use ($message) {
