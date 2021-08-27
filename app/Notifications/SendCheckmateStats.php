@@ -40,6 +40,9 @@ class SendCheckmateStats extends Notification
             ->reject(function ($project) {
                 return $project->status === Project::STATUS_CURRENT;
             })
+            ->reject(function ($project) {
+                return $project->ignored;
+            })
             ->when(! config('app.show_private_repos'), function ($collection) {
                 return $collection->reject(function ($project) {
                     return $project->is_private;
