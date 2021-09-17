@@ -88,8 +88,14 @@ class SendCheckmateStats extends Notification
                             [
                                 'type' => 'mrkdwn',
                                 'text' => sprintf(
-                                    "Current Version: %s\t\t\tPrescribed Version Status: %s",
+                                    "*Current Laravel Version:* %s",
                                     $project->current_laravel_version,
+                                ),
+                            ],
+                            [
+                                'type' => 'mrkdwn',
+                                'text' => sprintf(
+                                    "*Prescribed Version:* %s",
                                     $project->desiredLaravelVersion,
                                 ),
                             ],
