@@ -23,19 +23,19 @@ $backgroundColorByStatus = [
         </p>
         <div class="rounded-lg shadow">
             <ul class="flex p-4 bg-gray-400 border-b-2 rounded-t-lg list-reset border-gray">
-                <li class="w-2/6 text-xs font-semibold tracking-wide uppercase">Project / Package name</li>
+                <li class="w-2/6 text-xs font-semibold tracking-wide uppercase px-2">Project / Package name</li>
 
-                <li class="w-1/6 text-xs font-semibold tracking-wide uppercase">Version Constraint</li>
+                <li class="w-1/6 text-xs font-semibold tracking-wide uppercase px-2">Version Constraint</li>
 
-                <li class="w-1/6 text-xs font-semibold tracking-wide uppercase">Current Version</li>
+                <li class="w-1/6 text-xs font-semibold tracking-wide uppercase px-2">Current Version</li>
 
-                <li class="w-1/6 text-xs font-semibold tracking-wide uppercase">Prescribed Version</li>
+                <li class="w-1/6 text-xs font-semibold tracking-wide uppercase px-2">Prescribed Version</li>
 
-                <li class="w-1/6 text-xs font-semibold tracking-wide uppercase">Status</li>
+                <li class="w-1/6 text-xs font-semibold tracking-wide uppercase px-2">Status</li>
 
-                <li class="w-1/6 text-xs font-semibold tracking-wide uppercase">Ignore</li>
+                <li class="w-1/6 text-xs font-semibold tracking-wide uppercase px-2">Ignore</li>
 
-                <li class="w-1/6 text-xs font-semibold tracking-wide uppercase">Private?</li>
+                <li class="w-1/6 text-xs font-semibold tracking-wide uppercase px-2">Private?</li>
             </ul>
 
             <section class="bg-white rounded-b-lg">
