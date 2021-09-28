@@ -143,7 +143,7 @@ class GetProjectsFromGitHub
 
     protected function handleNextPage($response): ?string
     {
-        $nextPage = data_get($response, 'data.organization.repositories.pageInfo')['endCursor'];
+        $nextPage = data_get($response, 'data.organization.repositories.pageInfo')['endCursor'] ?? null;
 
         if ($nextPage) {
             $this->info('Getting another page.');
