@@ -73,22 +73,7 @@ class Project extends Model
     {
         $major = explode('.', $this->current_laravel_version)[0];
 
-        if ($major === '8') {
-            // @see https://laravel.com/docs/8.x/releases#support-policy
-            return strtotime('September 8th, 2021') >= strtotime('today');
-        }
-
-        if ($major === '7') {
-            // @see https://laravel.com/docs/7.x/releases#support-policy
-            return strtotime('March 3rd, 2021') >= strtotime('today');
-        }
-
-        if ($major === '6') {
-            // @see https://laravel.com/docs/6.x/releases#support-policy
-            return strtotime('September 3rd, 2022') >= strtotime('today');
-        }
-
-        return false;
+        return isset(LaravelVersion::SECURITY_FIX_END_DATES[$major]) && strtotime(LaravelVersion::SECURITY_FIX_END_DATES[$major]) >= strtotime('today');
     }
 
     public function scopeActive($query)
