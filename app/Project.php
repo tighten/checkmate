@@ -83,7 +83,6 @@ class Project extends Model
         $major = explode('.', $this->current_laravel_version)[0];
 
         return isset(self::SECURITY_FIX_END_DATES[$major]) && strtotime(self::SECURITY_FIX_END_DATES[$major]) >= strtotime('today');
-
     }
 
     public function scopeActive($query)
