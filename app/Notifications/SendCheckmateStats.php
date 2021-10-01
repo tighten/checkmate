@@ -17,13 +17,13 @@ class SendCheckmateStats extends Notification
     {
         $message = (new SlackMessage)
             // Provide a text-only fallback message
-            ->content(sprintf('Here are your Checkmate stats! %s', config('app.url')))
+            ->content(sprintf('Here are your Laravel version stats for Checkmate projects! %s', config('app.url')))
             ->block(function ($block) {
                 $block
                     ->type('section')
                     ->text([
                         'type' => 'mrkdwn',
-                        'text' => 'Here are your Checkmate stats!',
+                        'text' => 'Here are your Laravel version stats for Checkmate projects! ',
                     ])
                     ->accessory([
                         'type' => 'button',
@@ -81,21 +81,17 @@ class SendCheckmateStats extends Notification
                         ->type('context')
                         ->elements([
                             [
-                                'type' => 'plain_text',
-                                'emoji' => true,
-                                'text' => $scoreMoji,
-                            ],
-                            [
                                 'type' => 'mrkdwn',
                                 'text' => sprintf(
-                                    "*Current Laravel Version:* %s",
+                                    "%s *Current:* %s",
+                                    $scoreMoji,
                                     $project->current_laravel_version,
                                 ),
                             ],
                             [
                                 'type' => 'mrkdwn',
                                 'text' => sprintf(
-                                    "*Prescribed Version:* %s",
+                                    "*Prescribed:* %s",
                                     $project->desiredLaravelVersion,
                                 ),
                             ],
