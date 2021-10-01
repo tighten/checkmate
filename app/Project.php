@@ -11,6 +11,15 @@ class Project extends Model
     public const STATUS_CURRENT = 'current';
     public const STATUS_INSECURE = 'insecure';
 
+    // @see support policy https://laravel.com/docs/8.x/releases#support-policy
+    public const SECURITY_FIX_END_DATES = [
+        6 => 'September 6th, 2022',
+        7 => 'March 3rd, 2021',
+        8 => 'January 24th, 2023',
+        9 => 'January 28th, 2025',
+        10 => 'January 28th, 2025',
+    ];
+
     protected $guarded = ['id'];
 
     protected $casts = [
@@ -73,19 +82,27 @@ class Project extends Model
     {
         $major = explode('.', $this->current_laravel_version)[0];
 
+        if ($major === '10') {
+            return strtotime(self::SECURITY_FIX_END_DATES[10]) >= strtotime('today');
+        }
+
+        if ($major === '9') {
+            return strtotime(self::SECURITY_FIX_END_DATES[9]) >= strtotime('today');
+        }
+
         if ($major === '8') {
             // @see https://laravel.com/docs/8.x/releases#support-policy
-            return strtotime('September 8th, 2021') >= strtotime('today');
+            return strtotime(self::SECURITY_FIX_END_DATES[8]) >= strtotime('today');
         }
 
         if ($major === '7') {
             // @see https://laravel.com/docs/7.x/releases#support-policy
-            return strtotime('March 3rd, 2021') >= strtotime('today');
+            return strtotime(self::SECURITY_FIX_END_DATES[7]) >= strtotime('today');
         }
 
         if ($major === '6') {
             // @see https://laravel.com/docs/6.x/releases#support-policy
-            return strtotime('September 3rd, 2022') >= strtotime('today');
+            return strtotime(self::SECURITY_FIX_END_DATES[6]) >= strtotime('today');
         }
 
         return false;
