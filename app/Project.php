@@ -11,15 +11,6 @@ class Project extends Model
     public const STATUS_CURRENT = 'current';
     public const STATUS_INSECURE = 'insecure';
 
-    // @see support policy https://laravel.com/docs/8.x/releases#support-policy
-    public const SECURITY_FIX_END_DATES = [
-        6 => 'September 6th, 2022',
-        7 => 'March 3rd, 2021',
-        8 => 'January 24th, 2023',
-        9 => 'January 28th, 2025',
-        10 => 'January 28th, 2025',
-    ];
-
     protected $guarded = ['id'];
 
     protected $casts = [
@@ -82,7 +73,7 @@ class Project extends Model
     {
         $major = explode('.', $this->current_laravel_version)[0];
 
-        return isset(self::SECURITY_FIX_END_DATES[$major]) && strtotime(self::SECURITY_FIX_END_DATES[$major]) >= strtotime('today');
+        return isset(LaravelVersion::SECURITY_FIX_END_DATES[$major]) && strtotime(LaravelVersion::SECURITY_FIX_END_DATES[$major]) >= strtotime('today');
     }
 
     public function scopeActive($query)
