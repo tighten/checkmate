@@ -132,7 +132,8 @@ class SyncLaravelVersions extends Command
     private function getErrorMessageFromJson($responseJson)
     {
         if (array_key_exists('errors', $responseJson)) {
-            return collect(array_column($responseJson['errors'], 'message'))
+            return collect($responseJson['errors'])
+                ->pluck('message')
                 ->implode('. ');
         }
 
