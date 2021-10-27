@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\LaravelVersion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\TestCase;
 
 class SyncingLaravelVersionsTest extends TestCase
@@ -53,5 +54,27 @@ class SyncingLaravelVersionsTest extends TestCase
             $this->assertEquals('7', $version->major);
             $this->assertEquals('19', $version->minor);
         });
+    }
+
+    /** @test */
+    function it_can_build_an_error_message_from_response_json()
+    {
+        $this->expectException(HttpException::class);
+        $this->expectExceptionMessage("Error connecting to GitHub: Something went wrong 1. Something went wrong 2");
+
+        Http::fake(['api.github.com/graphql' => Http::response(file_get_contents('tests/responses/multiple-errors.json'), 500)]);
+
+        $this->artisan('sync:laravel-versions');
+    }
+
+    /** @test */
+    function it_provides_a_generic_error_message_when_response_json_has_no_error_key()
+    {
+        $this->expectException(HttpException::class);
+        $this->expectExceptionMessage("Error connecting to GitHub: No error message provided.");
+
+        Http::fake(['api.github.com/graphql' => Http::response(file_get_contents('tests/responses/versions.json'), 500)]);
+
+        $this->artisan('sync:laravel-versions');
     }
 }

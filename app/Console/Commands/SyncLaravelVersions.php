@@ -113,7 +113,7 @@ class SyncLaravelVersions extends Command
                 $responseJson = $response->json();
 
                 if (! $response->ok()) {
-                    abort($response->getStatusCode(), 'Error connecting to GitHub: ' . $responseJson['message']);
+                    abort($response->getStatusCode(), 'Error connecting to GitHub: ' . $this->getErrorMessageFromJson($responseJson));
                 }
 
                 $tags->push(collect(data_get($responseJson, 'data.repository.refs.nodes')));
@@ -127,5 +127,16 @@ class SyncLaravelVersions extends Command
 
             return $tags->flatten(1);
         });
+    }
+
+    private function getErrorMessageFromJson($responseJson)
+    {
+        if (array_key_exists('errors', $responseJson)) {
+            return collect($responseJson['errors'])
+                ->pluck('message')
+                ->implode('. ');
+        }
+
+        return 'No error message provided.';
     }
 }
