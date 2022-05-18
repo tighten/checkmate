@@ -2,6 +2,8 @@
 
 Checkmate is a tool that allows users to quickly see which Laravel projects are behind their prescribed Laravel version.
 
+**ARCHIVED** because we're now just using Laravel Shift's Shifty Plan for this.
+
 ## Installation
 
 1. Clone the repository locally
